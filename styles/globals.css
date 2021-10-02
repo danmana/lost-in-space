@@ -6,6 +6,11 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+body {
+  background: url("../public/background-large.jpeg") no-repeat;
+  background-size: cover;
+}
+
 a {
   color: inherit;
   text-decoration: none;

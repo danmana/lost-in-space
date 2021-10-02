@@ -1,0 +1,32 @@
+.container {
+  background: white;
+  padding: 15px;
+}
+
+.resources-container {
+  margin: 20px 0;
+}
+
+.resource label {
+  display: inline-block;
+  width: 200px;
+}
+
+.resource {
+  display: flex;
+
+  input {
+    border: black 1px solid;
+    border-radius: 5px;
+  }
+}
+
+.quantity {
+  flex: 1;
+  text-align: end;
+}
+
+.totals {
+  display: flex;
+  justify-content: space-between;
+}

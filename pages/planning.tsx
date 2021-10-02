@@ -1,9 +1,10 @@
 import styles from "../styles/Home.module.css";
 import planningStyles from "../styles/Planning.module.scss";
 import Link from "next/link"
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Warehouse } from "../common/model/warehouse.model";
 import { Resource } from "../common/model/resource.model";
+import { UserContext } from '../common/context/user.context';
 
 const emptyWarehouse: Warehouse = {
   resources: {},
@@ -21,6 +22,7 @@ const resources: { [key: string]: Resource } = {
 
 const Planning = () => {
   const [warehouse, setWarehouse] = useState(emptyWarehouse);
+  const {username, setUsername} = useContext(UserContext);
 
   const totalWeight = Object.entries(warehouse.resources).reduce(((previousValue, [_, resourceEntry]) => {
     const currentWeight = resourceEntry.quantity * resourceEntry.resource.weight;
@@ -51,7 +53,7 @@ const Planning = () => {
   return (
     <div className={styles.container}>
       <main className={planningStyles.container}>
-        <h1>Plan your resources so that the space crew can reach mars!</h1>
+        <h1>Hey {username}, plan your resources so that the space crew can reach mars!</h1>
         <div className={planningStyles['resources-container']}>
           {resourceContainers}
         </div>

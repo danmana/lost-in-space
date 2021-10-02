@@ -6,11 +6,22 @@
 
 .messages {
   margin-right: 30px;
+  width: 60%;
 
-  & .message {
+  & .messageContainer {
+
     background-color: white;
     padding: 20px 30px;
     border-radius: 4px;
+
+    & .inputContainer {
+      margin-top: 20px;
+
+      & > input {
+        border-bottom: 1px solid blue;
+        color: blue
+      }
+    }
   }
 
   & .buttons {
@@ -42,5 +53,6 @@
 }
 
 .resources {
+  width: 40%;
 
 }

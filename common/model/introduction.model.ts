@@ -4,7 +4,8 @@ export interface Introduction {
 
 export interface Message {
     content: string;
-    inputs: Input[];
+    // inputs: Input[];
+    inputName: boolean;
     resource: any; // image / animation
 }
 

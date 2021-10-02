@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 
   return (
     <main className={indexStyles.container}>
-      <img src={'/avatars/mad.svg'} alt="Mad scientist"/>
+      <img src={'/svg/mad.svg'} alt="Mad scientist"/>
       <section className={indexStyles.messages}>
         <div
           className={indexStyles.messageContainer}

@@ -1,15 +1,11 @@
 import styles from "../styles/Home.module.css";
 import planningStyles from "../styles/Planning.module.scss";
 import Link from "next/link"
-import React, { useContext, useState } from "react";
-import { ResourceEntry, Warehouse } from "../common/model/warehouse.model";
+import React, { useContext } from "react";
+import { ResourceEntry } from "../common/model/warehouse.model";
 import { Resource } from "../common/model/resource.model";
 import { UserContext } from "../common/context/user.context";
-
-const emptyWarehouse: Warehouse = {
-  resources: {},
-  stats: {}
-}
+import { WarehouseContext } from "../common/context/warehouse.context";
 
 const basicResources: { [key: string]: Resource } = {
   fuel: { type: "Fuel", price: 10, weight: 10 },
@@ -33,7 +29,7 @@ const miscResources: { [key: string]: Resource } = {
 }
 
 const Planning = () => {
-  const [warehouse, setWarehouse] = useState(emptyWarehouse);
+  const { warehouse, setWarehouse } = useContext(WarehouseContext);
   const { username } = useContext(UserContext);
 
   const changeBasicQuantity = (key: string, quantity: number) => {
@@ -115,8 +111,8 @@ const Planning = () => {
 
           <div className={planningStyles.totals}>
             <span>Total </span>
-            <span>weight: {totalWeight}kg</span>
-            <span>price: {totalPrice}$</span>
+            <span>weight: {totalWeight | 0}kg</span>
+            <span>price: {totalPrice | 0}$</span>
           </div>
         </div>
 

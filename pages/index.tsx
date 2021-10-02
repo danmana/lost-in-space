@@ -8,7 +8,6 @@ import Astro from '../public/happy_astronaut.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../common/context/user.context';
-import MadScientist from '../public/avatars/mad-scientist.svg';
 
 const Introduction = {
   messages: [
@@ -48,38 +47,36 @@ const Home: NextPage = () => {
   }
 
   return (
-      <main className={indexStyles.container}>
-        <section className={indexStyles.messages}>
+    <main className={indexStyles.container}>
+      <img src={'/avatars/mad.svg'} alt="Mad scientist"/>
+      <section className={indexStyles.messages}>
+        <div
+          className={indexStyles.messageContainer}
+        >
           <div
-            className={indexStyles.messageContainer}
+            className={indexStyles.message}
+            dangerouslySetInnerHTML={{__html: messages[currentMessage].content}}
           >
-            <div
-              className={indexStyles.message}
-              dangerouslySetInnerHTML={{__html: messages[currentMessage].content}}
-            >
+          </div>
+          {
+            messages[currentMessage].inputName &&
+            <div className={indexStyles.inputContainer}>
+              <input type="text"
+                     value={username}
+                     onChange={(event) => setUsername(event.target.value)}/>
             </div>
-            {
-              messages[currentMessage].inputName &&
-              <div className={indexStyles.inputContainer}>
-                <input type="text"
-                       value={username}
-                       onChange={(event) => setUsername(event.target.value)}/>
-              </div>
-            }
-          </div>
-          <div className={indexStyles.buttons}>
-            {currentMessage > 0 && <FontAwesomeIcon icon={faChevronLeft} onClick={goBack}/>}
-            <FontAwesomeIcon icon={faChevronRight} onClick={goNext}/>
-            {(currentMessage === messages.length - 1) && <div>Start here</div>}
-          </div>
-        </section>
-        <section className={indexStyles.resourcesContainer}>
-          <Image src={MadScientist} height={'500px'}/>
-          <section className={indexStyles.resources}>
-            <Image src={messages[currentMessage].resource}/>
-          </section>
-        </section>
-      </main>
+          }
+        </div>
+        <div className={indexStyles.buttons}>
+          {currentMessage > 0 &&
+          <FontAwesomeIcon className={indexStyles.backButton} icon={faChevronLeft} onClick={goBack}/>}
+          <FontAwesomeIcon icon={faChevronRight} onClick={goNext}/>
+        </div>
+      </section>
+      <section className={indexStyles.resources}>
+        <Image src={messages[currentMessage].resource}/>
+      </section>
+    </main>
   )
 }
 

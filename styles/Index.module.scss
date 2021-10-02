@@ -1,13 +1,21 @@
 .container {
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 80px;
+  flex-direction: row;
+
+  & > img {
+    height: 250px;
+    align-self: end;
+    margin-bottom: 30px;
+    margin-left: 30px;
+  }
 }
 
 .messages {
   margin-bottom: 50px;
-  width: 60%; // TODO check if needed to be removed
+  margin-right: 30px;
+  align-self: end;
+  width: 35%; // TODO check if needed to be removed
 
   & .messageContainer {
 
@@ -29,7 +37,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
     margin-top: 30px;
     text-align: center;
     color: white;
@@ -43,32 +51,16 @@
       display: inline-block;
       width: 30px;
 
-      &:first-child {
+      &.backButton {
         margin-right: 20px;
         padding-right: 24px;
       }
     }
-
-    & div {
-      margin-left: 20px;
-      top: 50%;
-      position: absolute;
-      transform: translate(calc(-50% + 340px), -50%);
-      right: 50%;
-    }
   }
-}
-
-.resourcesContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .resources {
-  max-height: 500px;
-  & * {
-    max-height: 500px;
-  }
-
+  max-height: 100vh;
+  margin-left: auto;
+  margin-right: 30px;
 }

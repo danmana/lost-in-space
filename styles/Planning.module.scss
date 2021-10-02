@@ -1,32 +1,77 @@
 .container {
-  background: white;
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+
+  background: rgb(255, 255, 255, 0.5);
+  padding: 0 15px;
+  min-width: 1000px;
+  width: 90%;
+
+  h1 {
+    text-align: center;
+  }
 }
 
 .resources-container {
-  margin: 20px 0;
+  margin: 10px 30px 0;
+  padding: 20px;
+  background: antiquewhite;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px 0;
 }
 
 .resource label {
   display: inline-block;
-  width: 200px;
+  width: 300px;
 }
 
 .resource {
   display: flex;
-
-  input {
-    border: black 1px solid;
-    border-radius: 5px;
-  }
+  margin: 5px 0;
+  font-size: 13px;
 }
 
-.quantity {
+.basic-resource {
+  width: 100px;
+  border: black 1px solid;
+  border-radius: 5px;
+}
+
+.misc-resource {
+  width: 20px;
+}
+
+.dotted-underline {
   flex: 1;
-  text-align: end;
+  border-bottom: 1px black dashed;
+  margin: 0 10px 10px;
+}
+
+.resource-picker {
+  margin-left: 50px;
 }
 
 .totals {
   display: flex;
-  justify-content: space-between;
+
+  :nth-child(1) {
+    width: 350px;
+  }
+
+  :nth-child(2) {
+    flex: 1;
+  }
+}
+
+.separator {
+  display: block;
+  border-bottom: 2px solid black;
+  margin: 20px 0;
+}
+
+.start {
+  width: 200px;
+  background: white;
+  padding: 10px;
+  margin: 20px 30px;
+  align-self: flex-end;
 }

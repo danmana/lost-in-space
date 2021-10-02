@@ -16,7 +16,7 @@ const Introduction = {
       resource: Rocket
     },
     {
-      content: "Here you can meet the Happy astronaut. Over and over again. What is your name? Here you can meet the Happy astronaut. Over and over again. What is your name?",
+      content: "Here you can meet the Happy astronaut. Over and over again. What is your name?",
       resource: Astro,
       inputName: true
     }

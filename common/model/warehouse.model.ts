@@ -6,7 +6,7 @@ export interface Warehouse {
   stats: { [key: string]: Stats };
 }
 
-interface ResourceEntry {
+export interface ResourceEntry {
   resource: Resource,
   quantity: number
 }

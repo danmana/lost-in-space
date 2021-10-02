@@ -2,6 +2,8 @@ import styles from "../styles/Execution.module.scss";
 import { NextPage } from "next";
 import { ResourceAvailability } from '../common/model/execution.model';
 import { Stats } from '../common/model/stats.model';
+import { useContext, useEffect } from 'react';
+import { WarehouseContext } from '../common/context/warehouse.context';
 
 const resources: ResourceAvailability[] = [
   {
@@ -42,24 +44,39 @@ const resources: ResourceAvailability[] = [
   //   remaining: 120
   // }
 ];
-const stats: Stats[] = [
-  {
+const stats: { [key: string]: Stats } = {
+  mood: {
     value: 75,
     type: "Mood"
   },
-  {
+  health: {
     value: 32,
     type: "Health"
   },
-  {
+  aircraft: {
     value: 55,
     type: "Aircraft"
-  },
+  }
+};
 
-];
+const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
 
 
 const Execution: NextPage = () => {
+  const {warehouse, setWarehouse} = useContext(WarehouseContext);
+
+  useEffect(() => {
+    const newWarehouse = {...warehouse};
+    Object.values(newWarehouse.resources)
+      .forEach((resource) => {
+        resource.remaining = resource.quantity
+      });
+
+    newWarehouse.stats = stats;
+
+    setWarehouse(newWarehouse);
+  }, []);
+
   const progress = (percentage: number) => {
     return (
       <div className={styles.loaderBar}>
@@ -99,30 +116,32 @@ const Execution: NextPage = () => {
         <h4>Stats</h4>
         <div>
           {
-            stats.map((stat, index) => (
-              <div key={stat.type + index}>
-                <div>{stat.type}</div>
-                <div className={styles.progressContainer}>
-                  {progress(stat.value)}
-                  <span>{stat.value}&nbsp;/&nbsp;100</span>
+            Object.values(warehouse.stats).map((stat, index) => {
+              return (
+                <div key={stat.type + index}>
+                  <div>{stat.type}</div>
+                  <div className={styles.progressContainer}>
+                    {progress(stat.value)}
+                    <span>{stat.value}&nbsp;/&nbsp;100</span>
+                  </div>
                 </div>
-              </div>
-            ))
+            )})
+
           }
         </div>
         <h4>Resources</h4>
         <div>
           {
-            resources.map((resource, index) => {
-              if (!resource.showInStats) {
+            Object.values(warehouse.resources).map((resource, index) => {
+              if (!shownResources.includes(resource.resource.type)) {
                 return null;
               }
 
               return (
-                <div key={resource.type + index}>
-                  <div>{resource.type}</div>
+                <div key={resource.resource.type + index}>
+                  <div>{resource.resource.type}</div>
                   <div className={styles.progressContainer}>
-                    {progress(Math.ceil(resource.remaining * 100 / resource.quantity))}
+                    {progress(Math.ceil((resource.remaining || 0) * 100 / resource.quantity))}
                     <span>{resource.remaining}&nbsp;/&nbsp;{resource.quantity}</span>
                   </div>
                 </div>

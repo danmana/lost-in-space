@@ -8,7 +8,7 @@ import { emptyWarehouse, WarehouseContext } from "../common/context/warehouse.co
 function MyApp({ Component, pageProps }: AppProps) {
 
   const [userName, setUsername] = useState();
-  const [, setWarehouse] = useState();
+  const [warehouse, setWarehouse] = useState(emptyWarehouse);
 
   return (<div>
       <Head>
@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         setUsername: setUsername as any
       }}>
         <WarehouseContext.Provider value={{
-          warehouse: emptyWarehouse,
+          warehouse: warehouse,
           setWarehouse: setWarehouse as any
         }}>
           <Component {...pageProps} />

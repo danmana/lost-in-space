@@ -6,7 +6,7 @@ const Execution: NextPage = () => {
     return (
         <div className={styles.container}>
             <main>
-                <h1>The moment of truth, how far can you get?</h1>
+                <h1>The moment of truth, how far can you get? ;)</h1>
                 <Link href={"/"}>Restart</Link>
             </main>
         </div>

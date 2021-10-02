@@ -12,14 +12,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
 
         <Component {...pageProps} />
-        <footer className={styles.footer}>
-          <a
-              href="https://fxbits.io"
-              target="_blank"
-          >
-            Powered by fxbits
-          </a>
-        </footer>
   </div>
 
   )

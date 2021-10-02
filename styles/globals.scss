@@ -12,6 +12,8 @@ body {
 body {
   background: url("../public/background-large.jpeg") no-repeat;
   background-size: cover;
+  min-height: 100vh;
+  height: 100vh;
 }
 
 a {

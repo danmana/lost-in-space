@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import styles from '../styles/Home.module.css'
 import indexStyles from '../styles/Index.module.scss'
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
@@ -9,6 +8,7 @@ import Astro from '../public/happy_astronaut.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../common/context/user.context';
+import MadScientist from '../public/avatars/mad-scientist.svg';
 
 const Introduction = {
   messages: [
@@ -48,7 +48,6 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className={styles.container}>
       <main className={indexStyles.container}>
         <section className={indexStyles.messages}>
           <div
@@ -74,11 +73,13 @@ const Home: NextPage = () => {
             {(currentMessage === messages.length - 1) && <div>Start here</div>}
           </div>
         </section>
-        <section className={indexStyles.resources}>
-          <Image src={messages[currentMessage].resource}/>
+        <section className={indexStyles.resourcesContainer}>
+          <Image src={MadScientist} height={'500px'}/>
+          <section className={indexStyles.resources}>
+            <Image src={messages[currentMessage].resource}/>
+          </section>
         </section>
       </main>
-    </div>
   )
 }
 

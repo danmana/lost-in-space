@@ -1,12 +1,13 @@
 .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
+  padding-top: 80px;
 }
 
 .messages {
-  margin-right: 30px;
-  width: 60%;
+  margin-bottom: 50px;
+  width: 60%; // TODO check if needed to be removed
 
   & .messageContainer {
 
@@ -25,6 +26,7 @@
   }
 
   & .buttons {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,6 +35,7 @@
     color: white;
 
     & > svg {
+      cursor: pointer;
       box-sizing: content-box;
       padding: 12px 20px 12px 24px;
       background-color: midnightblue;
@@ -46,13 +49,26 @@
       }
     }
 
-    & :last-child {
+    & div {
       margin-left: 20px;
+      top: 50%;
+      position: absolute;
+      transform: translate(calc(-50% + 340px), -50%);
+      right: 50%;
     }
   }
 }
 
+.resourcesContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .resources {
-  width: 40%;
+  max-height: 500px;
+  & * {
+    max-height: 500px;
+  }
 
 }

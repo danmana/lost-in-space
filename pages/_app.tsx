@@ -6,7 +6,7 @@ import { UserContext } from '../common/context/user.context';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const [userName, setUsername] = useState(null);
+  const [userName, setUsername] = useState();
 
 
   return (<div>

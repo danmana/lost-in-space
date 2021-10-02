@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.messages {
+  margin-right: 30px;
+
+  & .message {
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 4px;
+  }
+
+  & .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    text-align: center;
+    color: white;
+
+    & > svg {
+      box-sizing: content-box;
+      padding: 12px 20px 12px 24px;
+      background-color: midnightblue;
+      border-radius: 50%;
+      display: inline-block;
+      width: 30px;
+
+      &:first-child {
+        margin-right: 20px;
+        padding-right: 24px;
+      }
+    }
+
+    & :last-child {
+      margin-left: 20px;
+    }
+  }
+}
+
+.resources {
+
+}

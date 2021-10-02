@@ -1,5 +1,5 @@
 export interface Resource {
-  quantity: number;
+  quantity?: number;
   type: string;
   price: number;
   weight: number;

@@ -106,7 +106,7 @@ const Execution: NextPage = () => {
     }
   }
 
-  const applySolution = (event) => {
+  const applySolution = (event: any) => {
     if (solutionEffects) {
       const newWarehouse = {...warehouse};
       Object.entries(solutionEffects).forEach(([key, value]) => {

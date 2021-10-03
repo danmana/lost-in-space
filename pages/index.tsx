@@ -20,10 +20,10 @@ const Introduction = {
           "resources carefully so that you can reach Mars with no problems!"
     },
     {
-      content: "Oh! I forgot, this is your new crew: Meet your space colleagues Pati and Dana, they can be funny, at times.. joking, they are funny and ALSO they'll " +
+      content: "Oh! I forgot, this is your new crew: Meet your space colleagues Pati and Dana, they can be funny, at times... ALSO they'll " +
           "help you around for all the issues that may appear in your long \"excursion\" (communication issues, toilet breakdowns or other things like this)." +
-          "<br><br> You'll also have Dreu as your own personal \"Houston\", which will aid you along the whole process. And ofcourse me.. I'm gonna " +
-          "try to give you some tips and tricks and hopefully you'll listen to me. What was your name again?",
+          "<br><br> You'll also have Dr. Dreu as your own personal \"Houston\", which will aid you along the whole process. And of course me.. I'm gonna " +
+          "try to give you some tips and tricks and hopefully you'll listen to some of them. What was your name again?",
       resource: Team,
       inputName: true
     }

@@ -80,3 +80,17 @@
   margin: 20px 0;
   align-self: flex-end;
 }
+
+.misc-resource:before {
+  content:"";
+  display:inline-block;
+  width:20px;
+  height:20px;
+  background-image:url("../public/svg/checkbox.svg");
+  appearance: none;
+}
+
+.misc-resource:checked:before {
+  background-image:url("../public/svg/checkbox-checked.svg");
+  appearance: none;
+}

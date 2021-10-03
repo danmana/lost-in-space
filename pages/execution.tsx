@@ -4,9 +4,9 @@ import { useContext, useEffect, useState } from 'react';
 import { WarehouseContext } from '../common/context/warehouse.context';
 import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
-import { useRouter } from 'next/router';
 
 const daysToMars = 195;
+const secondToMoon = 35000;
 
 const play = true;
 // const play = false;
@@ -19,7 +19,6 @@ const initialMission: Mission = {
 const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
 
 const Execution: NextPage = () => {
-  const router = useRouter();
   const [mission, setMission] = useState(initialMission);
   const [currentEvent, setCurrentEvent] = useState(null as any);
   const [animation, setAnimation] = useState(null as any);
@@ -28,60 +27,34 @@ const Execution: NextPage = () => {
   const [isDead, setIsDead] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [day, setDay] = useState(0);
+  const [timeout, setTimeout] = useState(secondToMoon/24);
   const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
-    const newWarehouse = { ...warehouse };
-    Object.values(newWarehouse.resources)
-      .forEach((resource) => {
-        resource.remaining = resource.quantity
-      });
-
-    setWarehouse(newWarehouse);
-
     const map = document.getElementById('map');
     if (map) {
-      const animatedMap = map.animate(
+      map.animate(
         [
-          { transform: 'translateY(-93%)' },
-          { transform: 'translateY(0%)' },
+          {transform: 'translateY(-93%)'},
+          {transform: 'translateY(-31%)'},
         ], {
-          duration: 30000,
-          easing: 'ease-out',
+          duration: secondToMoon + (secondToMoon/24),
+          easing: 'linear',
           fill: 'both',
         })
 
-      setAnimation(animatedMap);
     }
-    // if (play) {
-    //
-    //   const rocket = document.getElementById('rocket');
-    //   if (rocket) {
-    //     const animatedRocket = rocket.animate(
-    //       [
-    //         {bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
-    //         {bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
-    //         {bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
-    //         {bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
-    //       ], {
-    //         duration: 30000,
-    //         easing: 'cubic-bezier(.4,.9,0,1)',
-    //         fill: 'both',
-    //       })
-    //
-    //     setAnimation(animatedRocket);
-    //   }
-    // }
+
   }, []);
 
   useEffect(() => {
-    if (currentEvent) {
+    if (currentEvent && animation) {
       animation.pause();
     }
-  }, [currentEvent]);
+  }, [currentEvent, animation]);
 
   useEffect(() => {
-    if (play) {
+    if (play && day > 0) {
       const event = getEvent();
       setCurrentEvent(event);
     }
@@ -114,7 +87,7 @@ const Execution: NextPage = () => {
 
   useEffect(() => {
     const resourceDepleted = Object.entries(warehouse.resources).some(([key, value]) => {
-      return value.remaining === 0;
+      return shownResources.includes(value.resource.type) && value.remaining === 0;
     });
     const statsDepleted = Object.entries(warehouse.stats).some(([key, value]) => {
       return value.value === 0;
@@ -138,16 +111,53 @@ const Execution: NextPage = () => {
         const timer = window.setInterval(() => {
           setMission(mission => {
             const newMission = { ...mission };
+            let newDay = day;
             if (newMission.hours < 24) {
               newMission.hours += 1;
+              newMission.distance += 1119758/24;
             } else {
+              setTimeout(100);
+              const newDay = newMission.hours / 24;
+              setDay(newDay)
               newMission.hours += 24;
-              setDay(newMission.hours / 24)
+              newMission.distance += 1119758;
             }
-            newMission.distance += 1119758;
+
+            if (newDay === 1) {
+              const map = document.getElementById('map');
+              if (map) {
+                const animatedMap = map.animate(
+                  [
+                    {transform: 'translateY(-31%)'},
+                    {transform: 'translateY(0)'},
+                  ], {
+                    duration: 19400,
+                    easing: 'linear',
+                    fill: 'both',
+                  })
+
+                setAnimation(animatedMap);
+              }
+            }
+
+            if (newDay === 175) {
+              const rocket = document.getElementById('rocket');
+              if (rocket) {
+                rocket.animate(
+                  [
+                    {transform: 'translateX(-50%)', bottom: '20px'},
+                    {transform: 'translateX(-50%) rotate(180deg)', bottom: '150px'},
+                  ], {
+                    duration: 2500,
+                    easing: 'linear',
+                    fill: 'both',
+                  })
+              }
+            }
+
             return newMission;
           });
-        }, 100)
+        }, timeout)
         return () => window.clearInterval(timer);
       }
     }
@@ -222,7 +232,7 @@ const Execution: NextPage = () => {
   }
 
   const again = () => {
-    router.push("/");
+    window.location.href = "/";
   }
 
   return (
@@ -274,10 +284,10 @@ const Execution: NextPage = () => {
         <section className={styles.info}>
           <div>
             {
-              mission.hours < 24 ? <div>Hours {mission.hours}</div>: <div>Days {day}</div>
+              mission.hours <= 24 ? <div>Hours {mission.hours}</div>: <div>Days {day}</div>
             }
           </div>
-          <div>Distance: {mission.distance.toLocaleString()} km</div>
+          {day >= 3 && <div>Distance: {Math.ceil(mission.distance).toLocaleString()} km</div>}
         </section>
 
         {currentEvent &&

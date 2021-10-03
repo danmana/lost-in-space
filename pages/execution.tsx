@@ -1,26 +1,12 @@
 import styles from "../styles/Execution.module.scss";
 import { NextPage } from "next";
-import { Stats } from '../common/model/stats.model';
 import { useContext, useEffect, useState } from 'react';
 import { WarehouseContext } from '../common/context/warehouse.context';
 import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
 import { useRouter } from 'next/router';
 
-const stats: { [key: string]: Stats } = {
-  happiness: {
-    value: 100,
-    type: "Mood"
-  },
-  health: {
-    value: 100,
-    type: "Health"
-  },
-  aircraft: {
-    value: 100,
-    type: "Aircraft"
-  }
-};
+const daysToMars = 10;
 
 const initialMission: Mission = {
   distance: 0,
@@ -38,7 +24,7 @@ const Execution: NextPage = () => {
   const [isBoom, setIsBoom] = useState(false);
   const [isDead, setIsDead] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const {warehouse, setWarehouse} = useContext(WarehouseContext);
+  const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
     const newWarehouse = { ...warehouse };
@@ -46,8 +32,6 @@ const Execution: NextPage = () => {
       .forEach((resource) => {
         resource.remaining = resource.quantity
       });
-
-    newWarehouse.stats = stats;
 
     setWarehouse(newWarehouse);
 
@@ -91,6 +75,18 @@ const Execution: NextPage = () => {
   }, [mission.day]);
 
   useEffect(() => {
+    if (mission.day === daysToMars) {
+      const dieAnyway = Math.random() < 0.3;
+      if (dieAnyway) {
+        setIsBoom(true);
+      } else {
+        setIsSuccess(true);
+      }
+      setCurrentEvent(null);
+    }
+  }, [mission.day]);
+
+  useEffect(() => {
     const resourceDepleted = Object.entries(warehouse.resources).some(([key, value]) => {
       return value.remaining === 0;
     });
@@ -111,7 +107,7 @@ const Execution: NextPage = () => {
   }, [isDead]);
 
   useEffect(() => {
-    if (!isDead && !isBoom && !isSuccess && !currentEvent && mission.day < 300) {
+    if (!isDead && !isBoom && !isSuccess && !currentEvent && mission.day < daysToMars) {
       const timer = window.setInterval(() => {
         setMission(mission => {
           const newMission = { ...mission };
@@ -269,39 +265,40 @@ const Execution: NextPage = () => {
 
       {isBoom &&
       <section className={`${styles.dialog} ${styles.isBoom}`}>
-        <img src={"/boom.png"} alt={"You exploded!"}/>
-        <div>
-          <p>Damn, you missed the landing. It happens even to the best astronauts. Next time try another landing spot!</p>
-          <p>Good luck!</p>
-        </div>
-        <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={again}>Start again</button>
-        </div>
+          <img src={"/boom.png"} alt={"You exploded!"}/>
+          <div>
+              <p>Damn, you missed the landing. It happens even to the best astronauts. Next time try another landing spot!</p>
+              <p>Good luck!</p>
+          </div>
+          <div className={styles.buttonContainer}>
+              <button className={styles.button} onClick={again}>Start again</button>
+          </div>
       </section>
       }
 
       {isDead &&
-        <section className={`${styles.dialog} ${styles.isDead}`}>
-        <img src={"/svg/dead2.svg"} alt={"You died!"}/>
-        <div>
-          Seems like the journey didn't go so well. Make sure to plan well from the beginning next time and don't forget, it's up to you to keep the team safe until during your trip to Mars!
-        </div>
-        <div className={styles.buttonContainer}>
-        <button className={styles.button} onClick={again}>Start again</button>
-        </div>
-        </section>
+      <section className={`${styles.dialog} ${styles.isDead}`}>
+          <img src={"/svg/dead2.svg"} alt={"You died!"}/>
+          <div>
+              Seems like the journey didn't go so well. Make sure to plan well from the beginning next time and don't forget, it's up to you to keep the team safe until during your
+              trip to Mars!
+          </div>
+          <div className={styles.buttonContainer}>
+              <button className={styles.button} onClick={again}>Start again</button>
+          </div>
+      </section>
       }
 
       {isSuccess &&
-        <section className={`${styles.dialog} ${styles.isSuccess}`}>
-        <img src={"/success.png"} alt={"You succeeded!"}/>
-        <div>
-          Congrats! You made it to Mars! Enjoy your time here while preparing for your journey back to Earth!
-        </div>
-        <div className={styles.buttonContainer}>
-        <button className={styles.button} onClick={again}>Another try</button>
-        </div>
-        </section>
+      <section className={`${styles.dialog} ${styles.isSuccess}`}>
+          <img src={"/success.png"} alt={"You succeeded!"}/>
+          <div>
+              Congrats! You made it to Mars! Enjoy your time here while preparing for your journey back to Earth!
+          </div>
+          <div className={styles.buttonContainer}>
+              <button className={styles.button} onClick={again}>Another try</button>
+          </div>
+      </section>
       }
     </main>
   )

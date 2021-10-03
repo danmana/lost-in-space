@@ -38,15 +38,15 @@ const Planning = () => {
   }, [warehouse]);
 
   const changeBasicQuantity = (key: string, quantity: number) => {
-    warehouse.resources[key] = { resource: basicResources[key], quantity: quantity };
+    warehouse.resources[key] = { resource: basicResources[key], quantity: quantity, remaining: quantity };
     setWarehouse({ ...warehouse });
   }
 
   const changeMiscQuantity = (key: string, checked: boolean) => {
     if (checked) {
-      warehouse.resources[key] = { resource: miscResources[key], quantity: 1 };
+      warehouse.resources[key] = { resource: miscResources[key], quantity: 1, remaining: 1 };
     } else {
-      warehouse.resources[key] = { resource: miscResources[key], quantity: 0 };
+      warehouse.resources[key] = { resource: miscResources[key], quantity: 0, remaining: 0 };
     }
     setWarehouse({ ...warehouse });
   }

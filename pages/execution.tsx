@@ -345,7 +345,7 @@ const Execution: NextPage = () => {
 
         {isDead &&
         <section className={`${styles.dialog} ${styles.isDead}`}>
-            <img src={"/svg/dead2.svg"} alt={"You died!"}/>
+            <img src={"/svg/dead.svg"} alt={"You died!"}/>
             <div>
                 Seems like the journey didn't go so well. Make sure to plan well from the beginning next time and don't
                 forget, it's up to you to keep the team safe until during your

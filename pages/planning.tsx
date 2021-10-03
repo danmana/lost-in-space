@@ -7,6 +7,8 @@ import { Resource } from "../common/model/resource.model";
 import { UserContext } from "../common/context/user.context";
 import { WarehouseContext } from "../common/context/warehouse.context";
 import BackgroundPlanets from "../common/components/background-planets";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faChevronRight, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 
 const basicResources: { [key: string]: Resource } = {
   fuel: { type: "Fuel", price: 50, weight: 1 }, // 200 = 10000
@@ -104,12 +106,16 @@ const Planning = () => {
         <h3>Hey {username}, plan your resources so that the space crew can reach Mars! You have a limited cargo space of 1750 units and a budget of 35k$</h3>
         <div className={planningStyles['resources-container']}>
           <div className={planningStyles['resources-type-container']}>
+            <FontAwesomeIcon icon={faInfoCircle} className={planningStyles.info} title={"Each day the crew consumes 3 units of food, the rest of the basic resources" +
+            " are consumed by 1 unit/day. Oxygen and Meds drop faster depending on the crew's health status."}/>
             <span className={planningStyles['resources-type']}>BASIC</span>
             <div className={planningStyles['resource-picker']}>
               {resourceContainers}
             </div>
           </div>
           <div className={planningStyles['resources-type-container']}>
+            <FontAwesomeIcon icon={faInfoCircle} className={planningStyles.info} title={"Misc resources are not consumed by default, but they may be used for getting out " +
+            " from difficult and unpredictable situations. Pay attention on what you're taking with you since you have limited cargo capacity and money."}/>
             <span>MISC</span>
             <div className={planningStyles['resource-picker']}>
               {miscContainers}

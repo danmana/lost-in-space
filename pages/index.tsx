@@ -3,7 +3,7 @@ import indexStyles from '../styles/Index.module.scss'
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import Image from 'next/image'
-import Team from '../public/team.svg';
+import Team from '../public/svg/team.svg';
 import Astro from '../public/happy_astronaut.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';

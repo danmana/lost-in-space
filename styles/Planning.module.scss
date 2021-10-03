@@ -90,6 +90,11 @@
   appearance: none;
 }
 
+.info {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
 .misc-resource:checked:before {
   background-image:url("../public/svg/checkbox-checked.svg");
   appearance: none;

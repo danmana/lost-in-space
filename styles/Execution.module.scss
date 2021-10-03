@@ -35,8 +35,6 @@
 .journey {
   position: relative;
   flex-basis: 75%;
-  background: url("../public/journey-background3.png") no-repeat;
-  background-size: cover;
   margin-top: 60px;
 
   & img {
@@ -54,6 +52,7 @@
   top: 40px;
   right: 0;
   text-align: right;
+  z-index: 2;
 
   & > *:not(:last-child) {
     margin-bottom: 10px;
@@ -135,6 +134,7 @@
   top: 50%;
   right: 50%;
   transform: translate(50%, -50%);
+  z-index: 2;
 
   & h3 {
     color: deepskyblue;
@@ -198,4 +198,17 @@
       margin-bottom: 60px;
     }
   }
+}
+
+.rocket {
+  z-index: 2;
+}
+
+.map {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 75%;
+  transform: translateY(-93%);
+  z-index: 1;
 }

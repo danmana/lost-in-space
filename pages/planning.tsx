@@ -51,9 +51,9 @@ const Planning = () => {
         <div className={planningStyles['resource']} key={key}>
           <label className={planningStyles.label}>{value.type}</label>
           <input className={planningStyles['basic-resource']}
-                 type="number"
+                 type="number" min={0}
                  onChange={(event) => changeBasicQuantity(key, Number.parseInt(event.target.value))}/>
-          <span>t</span>
+          <span>tî</span>
           <span className={planningStyles['dotted-underline']}/>
           <span className={planningStyles.quantity}>{(warehouse.resources[key]?.quantity | 0) * resources[key].price}$</span>
         </div>
@@ -111,7 +111,7 @@ const Planning = () => {
 
           <div className={planningStyles.totals}>
             <span>Total </span>
-            <span>weight: {totalWeight | 0}kg</span>
+            <span>weight: {totalWeight | 0}tî</span>
             <span>price: {totalPrice | 0}$</span>
           </div>
         </div>

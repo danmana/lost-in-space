@@ -1,49 +1,11 @@
 import styles from "../styles/Execution.module.scss";
 import { NextPage } from "next";
-import { ResourceAvailability } from '../common/model/execution.model';
 import { Stats } from '../common/model/stats.model';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { WarehouseContext } from '../common/context/warehouse.context';
+import { Mission } from "../common/model/mission.model";
+import { events } from "../common/model/event.model";
 
-const resources: ResourceAvailability[] = [
-  {
-    quantity: 170,
-    type: "Food",
-    remaining: 120,
-    showInStats: true
-  },
-  {
-    quantity: 200,
-    type: "Water",
-    remaining: 100,
-    showInStats: true
-  },
-  {
-    quantity: 250,
-    type: "Oxygen",
-    remaining: 220,
-    showInStats: true
-  },
-  {
-    quantity: 200,
-    type: "Meds",
-    remaining: 20,
-    showInStats: true
-  },
-  {
-    quantity: 150,
-    type: "Equipment",
-    remaining: 140,
-    showInStats: false
-  },
-
-  // TODO check how to include this
-  // {
-  //   quantity: 170,
-  //   type: "Misc",
-  //   remaining: 120
-  // }
-];
 const stats: { [key: string]: Stats } = {
   mood: {
     value: 75,
@@ -59,14 +21,20 @@ const stats: { [key: string]: Stats } = {
   }
 };
 
+const initialMission: Mission = {
+  distance: 0,
+  day: 0
+}
+
 const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
 
-
 const Execution: NextPage = () => {
-  const {warehouse, setWarehouse} = useContext(WarehouseContext);
+  const [mission, setMission] = useState(initialMission);
+  const [currentEvent, setCurrentEvent] = useState(null as any);
+  const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
-    const newWarehouse = {...warehouse};
+    const newWarehouse = { ...warehouse };
     Object.values(newWarehouse.resources)
       .forEach((resource) => {
         resource.remaining = resource.quantity
@@ -81,10 +49,10 @@ const Execution: NextPage = () => {
 
       const animatedRocket = rocket.animate(
         [
-          {bottom: '20px', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
-          {bottom: '450px', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
-          {bottom: '600px', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
-          {bottom: '800px', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
+          {bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
+          {bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
+          {bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
+          {bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
         ], {
           duration: 30000,
           easing: 'cubic-bezier(.4,.9,0,1)',
@@ -99,6 +67,46 @@ const Execution: NextPage = () => {
     }
   }, []);
 
+  const getEvent = () => {
+    const eventsToHappen = events.map(event => {
+      const chance = Math.random();
+      return { chance, event };
+    }).filter(({ chance, event }) => {
+      return chance < event.chance;
+    });
+    if (eventsToHappen.length) {
+      return eventsToHappen.reduce(((previousValue, currentValue) => {
+        return previousValue.chance < currentValue.chance ? currentValue: previousValue;
+      })).event;
+    } else {
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    if (currentEvent) {
+      console.log(currentEvent);
+    }
+  }, [currentEvent]);
+
+  useEffect(() => {
+    const event = getEvent();
+    setCurrentEvent(event);
+
+    if (!event && mission.day < 700) {
+      const timer = window.setInterval(() => {
+        setMission(mission => {
+          const newMission = { ...mission };
+          newMission.day += 1;
+          newMission.distance += 724427;
+          return newMission;
+        });
+      }, 200)
+      return () => window.clearInterval(timer);
+    }
+
+  }, [mission.day]);
+
   const progress = (percentage: number) => {
     return (
       <div className={styles.loaderBar}>
@@ -112,7 +120,7 @@ const Execution: NextPage = () => {
         <div className={styles.blockBorder}></div>
         <div className={styles.blockMeter}>
           <div className={styles.progress}
-               style={{width: `${percentage}%`, backgroundColor: getColor(percentage)}}></div>
+               style={{ width: `${percentage}%`, backgroundColor: getColor(percentage) }}></div>
         </div>
       </div>
     );
@@ -177,8 +185,8 @@ const Execution: NextPage = () => {
         <img src={'/svg/rocket2.svg'} alt={"Rocket"} id="rocket"/>
       </section>
       <section className={styles.info}>
-        <div>Distance: 12.678 km</div>
-        <div>Day 134</div>
+        <div>Day {mission.day}</div>
+        <div>Distance: {mission.distance} km</div>
       </section>
     </main>
   )

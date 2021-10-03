@@ -58,8 +58,8 @@ export const events: Event[] = [
     effects: { happiness: -4 },
     solutions: [
       { text: 'Look at family photos', effects: { happiness: -4 } },
-      { text: 'Call a friend (only if communication array is working)', effects: { happiness: 1 } },
-      { text: 'Call family (only if communication array is working)', effects: { happiness: 1 } },
+      { text: 'Call a friend', effects: { happiness: 1 } }, // TODO: only allow if communication array is working
+      { text: 'Call family', effects: { happiness: 1 } },
     ]
     // Effect: Hapiness -4
     // Solution: Look at family photos: Hapiness -4
@@ -87,7 +87,7 @@ export const events: Event[] = [
   },
   {
     name: "Minor accident",
-    content: "John forgot to strap himself while sleeping, again ... He floated while asleep and banged his head on something sharp.",
+    content: "Dana forgot to strap herself while sleeping, again ... She floated while asleep and banged her head on something sharp.",
     chance: 0.01,
     chanceIncrement: 0,
     effects: { health: -5, happiness: -2 },
@@ -101,7 +101,7 @@ export const events: Event[] = [
   },
   {
     name: "Minor accident",
-    content: "Jane hit her toe on the bulkhead door. It's not broken, but probably has a hairline fracture (astronauts loose bone mass in microgravity).",
+    content: "Pati hit her toe on the bulkhead door. It's not broken, but probably has a hairline fracture. Astronauts loose bone mass in microgravity and are more prone to bone fractures.",
     chance: 0.01,
     chanceIncrement: 0,
     effects: { health: -10, happiness: -2 },
@@ -121,7 +121,7 @@ export const events: Event[] = [
     effects: { health: -10, happiness: -2 },
     solutions: [
       { text: 'Take steroids', effects: { health: -5, happiness: -1, medicine: -1 } },
-      { text: 'Exercise (only if they have exercise equipment)', effects: { health: 2, happiness: 5 } }
+      { text: 'Exercise', effects: { health: 2, happiness: 5 } } // TODO: only allow this if they have exercise equipment
     ]
     // Effect: Health -10, Hapiness -2
     // Solution: Take steroids: Health: -5, Medicine -1, Hapiness -1
@@ -158,6 +158,7 @@ export const events: Event[] = [
     solutions: [
       { text: 'Do nothing', effects: { aircraft: -20, happiness: -5 } },
       { text: 'Compensate with other thrusters', effects: { aircraft: -5, happiness: -2, fuel: -2 } },
+      { text: 'Fix the thruster (EVA)', effects: { hapiness: -1, equipment: -5 } },
     ]
     // Effect: Spacecraft Health -10, Hapiness -5
     // Solution: Do nothing: Spacecraft Health -20, Hapiness -5
@@ -176,81 +177,120 @@ export const events: Event[] = [
     solutions: [
       { text: 'A bit of heat never hurt anyone before', effects: { health: -20, aircraft: -20, happiness: -20 } },
       { text: 'Vent the heat', effects: { aircraft: -10, happiness: -5, oxygen: -20 } },
+      { text: 'Fix the heat pump', effects: { equipment: -20 } },
     ]
     // Effect: Health -20, Spacecraft Health -20, Hapiness -20
     // Solution: A bit of heat never hurt anyone before: Health -20, Spacecraft Health -20, Hapiness -20
     // Solution: Vent the heat: Spacecraft Health -10, Hapiness -5, Oxygen -20
     // Solution: Fix the heat pump: Spare parts -20
   },
-  // {
-  //   name: "Surprise",
-  //   content: "You open today's dinner and find that the ground crew prepared a surprise for you: Chocolate cake",
-  //   chance: 0.001,
-  //   chanceIncrement: 0.001,
-  //   // Effect: Hapiness +5
-  //   // Solution: Eat it: Hapiness +5
-  // },
-  // {
-  //   name: "Air Quality",
-  //   content: "The air quality is so bad that the astronauts are not able to breathe properly.\n" +
-  //     "After further investigation you find out that the small particulate filter has some water damage and needs to be replaced.",
-  //   chance: 0.01,
-  //   chanceIncrement: 0,
-  //   // Effect: Health -10, Hapiness -5
-  //   // Solution: Just ignore it: Health -10, Hapiness -5
-  //   // Solution: Vent the bad air: Hapiness -5, Oxygen -20
-  //   // Solution: Replace the filter: Spare parts -20
-  // },
-  // {
-  //   name: "Air Quality",
-  //   content: "The CO2 scrubber is not working at 100% efficiency. The astronauts are having trouble concentrating and some are experiencing headaches.",
-  //   chance: 0.01,
-  //   chanceIncrement: 0,
-  //   // Effect: Health -10, Hapiness -5
-  //   // Solution: Just ignore it: Health -10, Hapiness -5
-  //   // Solution: Take painkillers: Health -8, Hapiness -2, Medicine -2
-  //   // Solution: Vent the bad air: Hapiness -5, Oxygen -20
-  //   // Solution: Replace the filter: Spare parts -20
-  // },
-  // {
-  //   name: "Insomnia",
-  //   content: "The lack of dark light cycles is messing with the astronauts circadian rithms. Some of them are having trouble sleeping.",
-  //   chance: 0.01,
-  //   chanceIncrement: 0,
-  //   // Effect: Health -10, Hapiness -5
-  //   // Solution: Ignore it, they will get used to it: Health -10, Hapiness -5
-  //   // Solution: Take sleeping pills: Health -2, Hapiness -1, Medicine -1
-  //   // Solution: Use ambient lights: Hapiness +2
-  // },
-  // {
-  //   name: "Spacecraft malfunction",
-  //   content: "The toilet is malfunctioning and is not providing enough suction.\n" +
-  //     "Using a toilet in space is hard enough when everything works fine, but this is really affecting the mood and health of the astronauts.",
-  //   // https://www.cnet.com/news/spacex-inspiration4-crew-had-challenges-with-the-spacecrafts-toilet-elon-musk-says/
-  //   chance: 0.01,
-  //   chanceIncrement: 0,
-  //   // Effect: Health -10, Hapiness -5
-  //   // Solution: Just ignore it: Health -10, Hapiness -5
-  //   // Solution: Replace the toilet: Spare parts -20
-  // },
-  // {
-  //   name: "Space dust",
-  //   content: "An unexpected cloud of dust damaged the communication array. You will need to replace it, otherwise you won't be able to talk with Earth",
-  //   chance: 0.01,
-  //   chanceIncrement: 0,
-  //   // Effect: Spacecraft Health -10, Hapiness -5, No Communication
-  //   // Solution: Who needs Earth anyway?: Spacecraft Health -10, Hapiness -5, No Communication
-  //   // Solution: Fix the antenna: Spare parts -20
-  // },
-  // {
-  //   name: "Solar flare",
-  //   content: "A small undetected solar flare caused a surge in the communication array. The communication array is malfunctioning and is not providing any signal.",
-  //   chance: 0.01,
-  //   chanceIncrement: 0,
-  //   // Effect: Spacecraft Health -10, Hapiness -5, No Communication
-  //   // Solution: Who needs Earth anyway?: Spacecraft Health -10, Hapiness -5, No Communication
-  //   // Solution: Fix the antenna: Spare parts -20
-  // },
+  {
+    name: "Surprise",
+    content: "You open today's dinner and find that the ground crew prepared a surprise for you: Chocolate cake",
+    chance: 0.001,
+    chanceIncrement: 0.001,
+    effects: { hapiness: 5},
+    solutions: [
+      { text: 'Eat it', effects: { happiness: 5 } },
+    ]
+    // Effect: Hapiness +5
+    // Solution: Eat it: Hapiness +5
+  },
+  {
+    name: "Air Quality",
+    content: "The air quality is so bad that the astronauts are not able to breathe properly.\n" +
+      "After further investigation you find out that the small particulate filter has some water damage and needs to be replaced.",
+    chance: 0.01,
+    chanceIncrement: 0,
+    effects: { health: -10, hapiness: -5 },
+    solutions: [
+      { text: 'Just ignore it', effects: { health: -10, hapiness: -5 } },
+      { text: 'Vent the bad air', effects: { hapiness: -5, oxygen: -20 } },
+      { text: 'Replace the filter', effects: { equipment: -20 } },
+    ]
+    // Effect: Health -10, Hapiness -5
+    // Solution: Just ignore it: Health -10, Hapiness -5
+    // Solution: Vent the bad air: Hapiness -5, Oxygen -20
+    // Solution: Replace the filter: Spare parts -20
+  },
+  {
+    name: "Air Quality",
+    content: "The CO2 scrubber is not working at 100% efficiency. The astronauts are having trouble concentrating and some are experiencing headaches.",
+    chance: 0.01,
+    chanceIncrement: 0,
+    effects: { health: -10, hapiness: -5 },
+    solutions: [
+      { text: 'Just ignore it', effects: { health: -10, hapiness: -5 } },
+      { text: 'Take painkillers', effects: { health: -8, hapiness: -2, medicine: -2 } },
+      { text: 'Vent the bad air', effects: { hapiness: -5, oxygen: -20 } },
+      { text: 'Replace the scrubber', effects: { equipment: -20 } },
+    ]
+    // Effect: Health -10, Hapiness -5
+    // Solution: Just ignore it: Health -10, Hapiness -5
+    // Solution: Take painkillers: Health -8, Hapiness -2, Medicine -2
+    // Solution: Vent the bad air: Hapiness -5, Oxygen -20
+    // Solution: Replace the filter: Spare parts -20
+  },
+  {
+    name: "Insomnia",
+    content: "The lack of dark light cycles is messing with the astronauts circadian rithms. Some of them are having trouble sleeping.",
+    chance: 0.01,
+    chanceIncrement: 0,
+    effects: { health: -10, hapiness: -5 },
+    solutions: [
+      { text: 'Ignore it, they will get used to it', effects: { health: -10, hapiness: -5 } },
+      { text: 'Take sleeping pills', effects: { health: -2, hapiness: -1, medicine: -1 } },
+      { text: 'Use ambient lights', effects: { hapiness: 2 } },
+    ]
+    // Effect: Health -10, Hapiness -5
+    // Solution: Ignore it, they will get used to it: Health -10, Hapiness -5
+    // Solution: Take sleeping pills: Health -2, Hapiness -1, Medicine -1
+    // Solution: Use ambient lights: Hapiness +2
+  },
+  {
+    name: "Spacecraft malfunction",
+    content: "The toilet is malfunctioning and is not providing enough suction.\n" +
+      "Using a toilet in space is hard enough when everything works fine, but this is really affecting the mood and health of the astronauts.",
+    // https://www.cnet.com/news/spacex-inspiration4-crew-had-challenges-with-the-spacecrafts-toilet-elon-musk-says/
+    chance: 0.01,
+    chanceIncrement: 0,
+    effects: { health: -10, hapiness: -5 },
+    solutions: [
+      { text: 'Just ignore it', effects: { health: -10, hapiness: -5 } },
+      { text: 'Replace the toilet fan', effects: { equipment: -20 } },
+    ]
+    // Effect: Health -10, Hapiness -5
+    // Solution: Just ignore it: Health -10, Hapiness -5
+    // Solution: Replace the toilet: Spare parts -20
+  },
+  {
+    name: "Space dust",
+    content: "An unexpected cloud of dust damaged the communication array. You will need to replace it, otherwise you won't be able to talk with Earth",
+    chance: 0.01,
+    chanceIncrement: 0,
+    effects: { aircraft: -10, hapiness: -5 },
+    solutions: [
+      { text: 'Who needs Earth anyway?', effects: { aircraft: -10, hapiness: -5 } },
+      { text: 'Fix the antenna', effects: { equipment: -20 } },
+    ]
+    // Effect: Spacecraft Health -10, Hapiness -5, No Communication
+    // Solution: Who needs Earth anyway?: Spacecraft Health -10, Hapiness -5, No Communication
+    // Solution: Fix the antenna: Spare parts -20
+  },
+  {
+    name: "Solar flare",
+    content: "A small undetected solar flare caused a surge in the communication array. The communication array is malfunctioning and is not providing any signal.",
+    chance: 0.01,
+    chanceIncrement: 0,
+    effects: { aircraft: -10, hapiness: -5 },
+    solutions: [
+      { text: 'Who needs Earth anyway?', effects: { aircraft: -10, hapiness: -5 } },
+      { text: 'Fix the antenna', effects: { equipment: -20 } },
+    ]
+    // Effect: Spacecraft Health -10, Hapiness -5, No Communication
+    // Solution: Who needs Earth anyway?: Spacecraft Health -10, Hapiness -5, No Communication
+    // Solution: Fix the antenna: Spare parts -20
+  },
   // {
   //   name: "Wrong trajectory",
   //   content: "During launch one of the engines underperformed and now the spacecraft is headed on the wrong trajectory",

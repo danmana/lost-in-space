@@ -1,3 +1,7 @@
+.parent {
+  position: relative;
+  overflow: hidden;
+}
 .container {
   height: 100vh;
   display: flex;
@@ -21,7 +25,7 @@
 
     background-color: white;
     padding: 20px 30px;
-    border-radius: 4px;
+    border-radius: 30px;
 
     & .inputContainer {
       margin-top: 20px;
@@ -38,29 +42,29 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
     text-align: center;
-    color: white;
+    color: black;
 
     & > svg {
       cursor: pointer;
       box-sizing: content-box;
-      padding: 12px 20px 12px 24px;
-      background-color: midnightblue;
+      padding: 6px 10px 6px 12px;
+      background-color: white;
       border-radius: 50%;
       display: inline-block;
-      width: 30px;
+      width: 15px;
 
       &.backButton {
-        margin-right: 20px;
-        padding-right: 24px;
+        margin-right: 10px;
+        padding-right: 12px;
       }
     }
   }
 }
 
 .resources {
+  align-self: center;
   max-height: 100vh;
-  margin-left: auto;
-  margin-right: 30px;
 }

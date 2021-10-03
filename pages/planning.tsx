@@ -6,6 +6,7 @@ import { ResourceEntry } from "../common/model/warehouse.model";
 import { Resource } from "../common/model/resource.model";
 import { UserContext } from "../common/context/user.context";
 import { WarehouseContext } from "../common/context/warehouse.context";
+import BackgroundPlanets from "../common/components/background-planets";
 
 const basicResources: { [key: string]: Resource } = {
   fuel: { type: "Fuel", price: 10, weight: 10 },
@@ -53,7 +54,7 @@ const Planning = () => {
           <input className={planningStyles['basic-resource']}
                  type="number" min={0}
                  onChange={(event) => changeBasicQuantity(key, Number.parseInt(event.target.value))}/>
-          <span>tî</span>
+          <span>tons</span>
           <span className={planningStyles['dotted-underline']}/>
           <span className={planningStyles.quantity}>{(warehouse.resources[key]?.quantity | 0) * resources[key].price}$</span>
         </div>
@@ -91,8 +92,9 @@ const Planning = () => {
 
   return (
     <div className={styles.container}>
+      <BackgroundPlanets/>
       <main className={planningStyles.container}>
-        <h1>Hey {username}, plan your resources so that the space crew can reach mars!</h1>
+        <h3>Hey {username}, plan your resources so that the space crew can reach Mars! You have a limited cargo space of 500 tons and a budget of 2mil$</h3>
         <div className={planningStyles['resources-container']}>
           <div className={planningStyles['resources-type-container']}>
             <span className={planningStyles['resources-type']}>BASIC</span>
@@ -111,13 +113,13 @@ const Planning = () => {
 
           <div className={planningStyles.totals}>
             <span>Total </span>
-            <span>weight: {totalWeight | 0}tî</span>
+            <span>weight: {totalWeight | 0}tons</span>
             <span>price: {totalPrice | 0}$</span>
           </div>
         </div>
 
         <Link href={"/execution"}>
-          <button className={planningStyles.start}>Let's roll</button>
+          <img src={"/start.png"} className={planningStyles.start} width={150} alt={"start button"}/>
         </Link>
       </main>
     </div>

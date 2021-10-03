@@ -10,7 +10,7 @@ body {
 }
 
 body {
-  background: url("../public/background-large.jpeg") no-repeat;
+  background: url("../public/background.png") no-repeat;
   background-size: cover;
   min-height: 100vh;
   height: 100vh;
@@ -23,4 +23,20 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+nav {
+  background-color:black;
+  position:fixed;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display:flex;
+  align-items:center;
+  padding-left:20px;
+  z-index: 10;
+
+  > h1 {
+   color : white;
+  }
 }

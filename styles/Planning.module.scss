@@ -1,20 +1,21 @@
 .container {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
+  width: 70%;
+  padding: 0 100px;
 
   background: rgb(255, 255, 255, 0.5);
-  padding: 0 15px;
   min-width: 1000px;
-  width: 90%;
-
-  h1 {
+  h3 {
+    padding: 40px 0;
     text-align: center;
+    align-self: center;
   }
 }
 
 .resources-container {
-  margin: 10px 30px 0;
-  padding: 20px;
+  padding: 20px 50px;
   background: antiquewhite;
   box-shadow: rgba(0, 0, 0, 0.1) 0 1px 2px 0;
 }
@@ -25,6 +26,7 @@
 }
 
 .resource {
+  align-items: center;
   display: flex;
   margin: 5px 0;
   font-size: 13px;
@@ -32,8 +34,13 @@
 
 .basic-resource {
   width: 100px;
-  border: black 1px solid;
   border-radius: 5px;
+  background-color: transparent;
+  height:30px;
+  padding: 10px;
+  border-style: none;
+  background-image:url("../public/input.png");
+  background-size: 100px 30px;
 }
 
 .misc-resource {
@@ -43,7 +50,7 @@
 .dotted-underline {
   flex: 1;
   border-bottom: 1px black dashed;
-  margin: 0 10px 10px;
+  margin: 10px 10px 0;
 }
 
 .resource-picker {
@@ -69,9 +76,7 @@
 }
 
 .start {
-  width: 200px;
-  background: white;
-  padding: 10px;
-  margin: 20px 30px;
+  cursor: pointer;
+  margin: 20px 0;
   align-self: flex-end;
 }

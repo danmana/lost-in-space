@@ -8,7 +8,8 @@ import { emptyWarehouse, WarehouseContext } from "../common/context/warehouse.co
 function MyApp({ Component, pageProps }: AppProps) {
 
   const [userName, setUsername] = useState();
-  const [warehouse, setWarehouse] = useState(emptyWarehouse);
+  const [warehouse, setWarehouse] = useState(JSON.parse("{\"resources\":{\"fuel\":{\"resource\":{\"type\":\"Fuel\",\"price\":10,\"weight\":10},\"quantity\":123},\"food\":{\"resource\":{\"type\":\"Food\",\"price\":10,\"weight\":10},\"quantity\":421},\"water\":{\"resource\":{\"type\":\"Water\",\"price\":10,\"weight\":10},\"quantity\":12},\"oxygen\":{\"resource\":{\"type\":\"Oxygen\",\"price\":10,\"weight\":10},\"quantity\":32},\"meds\":{\"resource\":{\"type\":\"Meds\",\"price\":10,\"weight\":10},\"quantity\":41},\"equipment\":{\"resource\":{\"type\":\"Equipment\",\"price\":10,\"weight\":10},\"quantity\":123},\"misc\":{\"resource\":{\"type\":\"Misc\",\"price\":10,\"weight\":10},\"quantity\":421},\"media\":{\"resource\":{\"type\":\"Media\",\"price\":10,\"weight\":10},\"quantity\":1},\"tv\":{\"resource\":{\"type\":\"TV\",\"price\":10,\"weight\":10},\"quantity\":1},\"nintendo\":{\"resource\":{\"type\":\"Nintendo\",\"price\":10,\"weight\":10},\"quantity\":1}},\"stats\":{}}"));
+  // const [warehouse, setWarehouse] = useState(emptyWarehouse);
 
   return (<div>
       <Head>

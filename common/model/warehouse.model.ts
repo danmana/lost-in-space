@@ -9,5 +9,5 @@ export interface Warehouse {
 export interface ResourceEntry {
   resource: Resource,
   quantity: number,
-  remaining?: number;
+  remaining: number;
 }

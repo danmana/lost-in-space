@@ -1,7 +1,7 @@
 import styles from "../styles/Home.module.css";
 import planningStyles from "../styles/Planning.module.scss";
 import Link from "next/link"
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ResourceEntry } from "../common/model/warehouse.model";
 import { Resource } from "../common/model/resource.model";
 import { UserContext } from "../common/context/user.context";
@@ -33,10 +33,15 @@ const Planning = () => {
   const { warehouse, setWarehouse } = useContext(WarehouseContext);
   const { username } = useContext(UserContext);
 
+  useEffect(() => {
+    console.log(JSON.stringify(warehouse));
+  }, [warehouse]);
+
   const changeBasicQuantity = (key: string, quantity: number) => {
     warehouse.resources[key] = { resource: basicResources[key], quantity: quantity };
     setWarehouse({ ...warehouse });
   }
+
   const changeMiscQuantity = (key: string, checked: boolean) => {
     if (checked) {
       warehouse.resources[key] = { resource: miscResources[key], quantity: 1 };

@@ -33,10 +33,11 @@ const Execution: NextPage = () => {
   const [currentEvent, setCurrentEvent] = useState(null as any);
   const [animation, setAnimation] = useState(null as any);
   const [solutionEffects, setSolutionEffects] = useState();
-  const {warehouse, setWarehouse} = useContext(WarehouseContext);
+  const [failedMission, setFailedMission] = useState(false);
+  const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
-    const newWarehouse = {...warehouse};
+    const newWarehouse = { ...warehouse };
     Object.values(newWarehouse.resources)
       .forEach((resource) => {
         resource.remaining = resource.quantity
@@ -50,10 +51,10 @@ const Execution: NextPage = () => {
     if (rocket) {
       const animatedRocket = rocket.animate(
         [
-          {bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
-          {bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
-          {bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
-          {bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
+          { bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)' },
+          { bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)' },
+          { bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)' },
+          { bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)' },
         ], {
           duration: 300000,
           easing: 'cubic-bezier(.4,.9,0,1)',
@@ -76,10 +77,30 @@ const Execution: NextPage = () => {
   }, [mission.day])
 
   useEffect(() => {
-    if (!currentEvent && mission.day < 300) {
+    const newWarehouse = { ...warehouse };
+    newWarehouse.resources.fuel && (newWarehouse.resources.fuel.remaining -= 0.5);
+    newWarehouse.resources.water && (newWarehouse.resources.water.remaining -= 0.5);
+    newWarehouse.resources.oxygen && (newWarehouse.resources.oxygen.remaining -= 0.5);
+    newWarehouse.resources.meds && (newWarehouse.resources.meds.remaining -= 0.5);
+
+    const resourceDepleted = Object.entries(newWarehouse.resources).some(([key, value]) => {
+      return value.remaining === 0;
+    });
+
+    if (resourceDepleted) {
+      setFailedMission(true);
+    }
+  }, [mission.day]);
+
+  useEffect(() => {
+    animation && animation.pause();
+  }, [failedMission]);
+
+  useEffect(() => {
+    if (!failedMission && !currentEvent && mission.day < 300) {
       const timer = window.setInterval(() => {
         setMission(mission => {
-          const newMission = {...mission};
+          const newMission = { ...mission };
           newMission.day += 1;
           newMission.distance += 724427;
           return newMission;
@@ -88,18 +109,18 @@ const Execution: NextPage = () => {
       return () => window.clearInterval(timer);
     }
 
-  }, [mission.day, currentEvent]);
+  }, [mission.day, currentEvent, failedMission]);
 
   const getEvent = () => {
     const eventsToHappen = events.map(event => {
       const chance = Math.random();
-      return {chance, event};
-    }).filter(({chance, event}) => {
+      return { chance, event };
+    }).filter(({ chance, event }) => {
       return chance < event.chance;
     });
     if (eventsToHappen.length) {
       return eventsToHappen.reduce(((previousValue, currentValue) => {
-        return previousValue.chance < currentValue.chance ? currentValue : previousValue;
+        return previousValue.chance < currentValue.chance ? currentValue: previousValue;
       })).event;
     } else {
       return null;
@@ -108,7 +129,7 @@ const Execution: NextPage = () => {
 
   const applySolution = (event: any) => {
     if (solutionEffects) {
-      const newWarehouse = {...warehouse};
+      const newWarehouse = { ...warehouse };
       Object.entries(solutionEffects).forEach(([key, value]) => {
         if (newWarehouse.stats[key]) {
           newWarehouse.stats[key].value += (value as number);
@@ -134,7 +155,7 @@ const Execution: NextPage = () => {
         <div className={styles.blockBorder}></div>
         <div className={styles.blockMeter}>
           <div className={styles.progress}
-               style={{width: `${percentage}%`, backgroundColor: getColor(percentage)}}></div>
+               style={{ width: `${percentage}%`, backgroundColor: getColor(percentage) }}></div>
         </div>
       </div>
     );
@@ -209,22 +230,22 @@ const Execution: NextPage = () => {
 
       {currentEvent &&
       <section className={styles.dialog}>
-        <h3>{currentEvent.name}</h3>
-        <div
-          dangerouslySetInnerHTML={{__html: currentEvent.content}}
-        ></div>
-        <div onChange={onChangeValue} className={styles.inputContainer}>
-          {currentEvent.solutions.map((solution: Solution, index: number) => {
-            return (
-              <label key={index}>
+          <h3>{currentEvent.name}</h3>
+          <div
+              dangerouslySetInnerHTML={{ __html: currentEvent.content }}
+          ></div>
+          <div onChange={onChangeValue} className={styles.inputContainer}>
+            {currentEvent.solutions.map((solution: Solution, index: number) => {
+              return (
+                <label key={index}>
                   <input type="radio" value={JSON.stringify(solution.effects)} name="solutions"/> {solution.text}
                 </label>
-            );
-          })}
-        </div>
-        <div className={styles.buttonContainer}>
-          <button className={`${styles.button} ${solutionEffects ? '' : styles.grayedOut}`} onClick={applySolution}>Proceed</button>
-        </div>
+              );
+            })}
+          </div>
+          <div className={styles.buttonContainer}>
+              <button className={`${styles.button} ${solutionEffects ? '': styles.grayedOut}`} onClick={applySolution}>Proceed</button>
+          </div>
       </section>
       }
     </main>

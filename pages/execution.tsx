@@ -13,7 +13,7 @@ const play = true;
 
 const initialMission: Mission = {
   distance: 0,
-  day: 0
+  hours: 0
 }
 
 const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
@@ -27,10 +27,11 @@ const Execution: NextPage = () => {
   const [isBoom, setIsBoom] = useState(false);
   const [isDead, setIsDead] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const {warehouse, setWarehouse} = useContext(WarehouseContext);
+  const [day, setDay] = useState(0);
+  const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
-    const newWarehouse = {...warehouse};
+    const newWarehouse = { ...warehouse };
     Object.values(newWarehouse.resources)
       .forEach((resource) => {
         resource.remaining = resource.quantity
@@ -42,8 +43,8 @@ const Execution: NextPage = () => {
     if (map) {
       const animatedMap = map.animate(
         [
-          {transform: 'translateY(-93%)'},
-          {transform: 'translateY(0%)'},
+          { transform: 'translateY(-93%)' },
+          { transform: 'translateY(0%)' },
         ], {
           duration: 30000,
           easing: 'ease-out',
@@ -84,7 +85,7 @@ const Execution: NextPage = () => {
       const event = getEvent();
       setCurrentEvent(event);
     }
-  }, [mission.day])
+  }, [day])
 
   useEffect(() => {
     const newWarehouse = { ...warehouse };
@@ -97,10 +98,10 @@ const Execution: NextPage = () => {
     newWarehouse.resources.meds && (newWarehouse.resources.meds.remaining -= meds);
 
     setWarehouse(newWarehouse);
-  }, [mission.day]);
+  }, [day]);
 
   useEffect(() => {
-    if (mission.day === daysToMars) {
+    if (day === daysToMars) {
       const dieAnyway = Math.random() < 0.3;
       if (dieAnyway) {
         setIsBoom(true);
@@ -109,7 +110,7 @@ const Execution: NextPage = () => {
       }
       setCurrentEvent(null);
     }
-  }, [mission.day]);
+  }, [day]);
 
   useEffect(() => {
     const resourceDepleted = Object.entries(warehouse.resources).some(([key, value]) => {
@@ -133,11 +134,16 @@ const Execution: NextPage = () => {
 
   useEffect(() => {
     if (play) {
-      if (!isDead && !isBoom && !isSuccess && !currentEvent && mission.day < daysToMars) {
+      if (!isDead && !isBoom && !isSuccess && !currentEvent && day < daysToMars) {
         const timer = window.setInterval(() => {
           setMission(mission => {
-            const newMission = {...mission};
-            newMission.day += 1;
+            const newMission = { ...mission };
+            if (newMission.hours < 24) {
+              newMission.hours += 1;
+            } else {
+              newMission.hours += 24;
+              setDay(newMission.hours / 24)
+            }
             newMission.distance += 1119758;
             return newMission;
           });
@@ -146,18 +152,18 @@ const Execution: NextPage = () => {
       }
     }
 
-  }, [mission.day, currentEvent, isDead, isBoom, isSuccess]);
+  }, [day, currentEvent, isDead, isBoom, isSuccess]);
 
   const getEvent = () => {
     const eventsToHappen = events.map(event => {
       const chance = Math.random();
-      return {chance, event};
-    }).filter(({chance, event}) => {
+      return { chance, event };
+    }).filter(({ chance, event }) => {
       return chance < event.chance;
     });
     if (eventsToHappen.length) {
       return eventsToHappen.reduce(((previousValue, currentValue) => {
-        return previousValue.chance < currentValue.chance ? currentValue : previousValue;
+        return previousValue.chance < currentValue.chance ? currentValue: previousValue;
       })).event;
     } else {
       return null;
@@ -166,7 +172,7 @@ const Execution: NextPage = () => {
 
   const applySolution = (event: any) => {
     if (solutionEffects) {
-      const newWarehouse = {...warehouse};
+      const newWarehouse = { ...warehouse };
       Object.entries(solutionEffects).forEach(([key, value]) => {
         if (newWarehouse.stats[key]) {
           newWarehouse.stats[key].value += (value as number);
@@ -192,7 +198,7 @@ const Execution: NextPage = () => {
         <div className={styles.blockBorder}></div>
         <div className={styles.blockMeter}>
           <div className={styles.progress}
-               style={{width: `${percentage}%`, backgroundColor: getColor(percentage)}}></div>
+               style={{ width: `${percentage}%`, backgroundColor: getColor(percentage) }}></div>
         </div>
       </div>
     );
@@ -266,70 +272,74 @@ const Execution: NextPage = () => {
           <img src={'/svg/rocket2.svg'} alt={"Rocket"} id="rocket" className={styles.rocket}/>
         </section>
         <section className={styles.info}>
-          <div>Day {mission.day}</div>
+          <div>
+            {
+              mission.hours < 24 ? <div>Hours {mission.hours}</div>: <div>Days {day}</div>
+            }
+          </div>
           <div>Distance: {mission.distance.toLocaleString()} km</div>
         </section>
 
         {currentEvent &&
         <section className={styles.dialog}>
-          <h3>{currentEvent.name}</h3>
-          <div
-            dangerouslySetInnerHTML={{__html: currentEvent.content}}
-          ></div>
-          <div onChange={onChangeValue} className={styles.inputContainer}>
-            {currentEvent.solutions.map((solution: Solution, index: number) => {
-              return (
-                <label key={index}>
-                  <input type="radio" value={JSON.stringify(solution.effects)} name="solutions"/> {solution.text}
-                </label>
-              );
-            })}
-          </div>
-          <div className={styles.buttonContainer}>
-            <button className={`${styles.button} ${solutionEffects ? '' : styles.grayedOut}`}
-                    onClick={applySolution}>Proceed
-            </button>
-          </div>
+            <h3>{currentEvent.name}</h3>
+            <div
+                dangerouslySetInnerHTML={{ __html: currentEvent.content }}
+            ></div>
+            <div onChange={onChangeValue} className={styles.inputContainer}>
+              {currentEvent.solutions.map((solution: Solution, index: number) => {
+                return (
+                  <label key={index}>
+                    <input type="radio" value={JSON.stringify(solution.effects)} name="solutions"/> {solution.text}
+                  </label>
+                );
+              })}
+            </div>
+            <div className={styles.buttonContainer}>
+                <button className={`${styles.button} ${solutionEffects ? '': styles.grayedOut}`}
+                        onClick={applySolution}>Proceed
+                </button>
+            </div>
         </section>
         }
 
         {isBoom &&
         <section className={`${styles.dialog} ${styles.isBoom}`}>
-          <img src={"/boom.png"} alt={"You exploded!"}/>
-          <div>
-            <p>Damn, you missed the landing. It happens even to the best astronauts. Next time try another landing
-              spot!</p>
-            <p>Good luck!</p>
-          </div>
-          <div className={styles.buttonContainer}>
-            <button className={styles.button} onClick={again}>Start again</button>
-          </div>
+            <img src={"/boom.png"} alt={"You exploded!"}/>
+            <div>
+                <p>Damn, you missed the landing. It happens even to the best astronauts. Next time try another landing
+                    spot!</p>
+                <p>Good luck!</p>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button className={styles.button} onClick={again}>Start again</button>
+            </div>
         </section>
         }
 
         {isDead &&
         <section className={`${styles.dialog} ${styles.isDead}`}>
-          <img src={"/svg/dead2.svg"} alt={"You died!"}/>
-          <div>
-            Seems like the journey didn't go so well. Make sure to plan well from the beginning next time and don't
-            forget, it's up to you to keep the team safe until during your
-            trip to Mars!
-          </div>
-          <div className={styles.buttonContainer}>
-            <button className={styles.button} onClick={again}>Start again</button>
-          </div>
+            <img src={"/svg/dead2.svg"} alt={"You died!"}/>
+            <div>
+                Seems like the journey didn't go so well. Make sure to plan well from the beginning next time and don't
+                forget, it's up to you to keep the team safe until during your
+                trip to Mars!
+            </div>
+            <div className={styles.buttonContainer}>
+                <button className={styles.button} onClick={again}>Start again</button>
+            </div>
         </section>
         }
 
         {isSuccess &&
         <section className={`${styles.dialog} ${styles.isSuccess}`}>
-          <img src={"/success.png"} alt={"You succeeded!"}/>
-          <div>
-            Congrats! You made it to Mars! Enjoy your time here while preparing for your journey back to Earth!
-          </div>
-          <div className={styles.buttonContainer}>
-            <button className={styles.button} onClick={again}>Another try</button>
-          </div>
+            <img src={"/success.png"} alt={"You succeeded!"}/>
+            <div>
+                Congrats! You made it to Mars! Enjoy your time here while preparing for your journey back to Earth!
+            </div>
+            <div className={styles.buttonContainer}>
+                <button className={styles.button} onClick={again}>Another try</button>
+            </div>
         </section>
         }
       </main>

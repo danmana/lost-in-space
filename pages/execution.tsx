@@ -6,7 +6,7 @@ import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
 import { useRouter } from 'next/router';
 
-const daysToMars = 10;
+const daysToMars = 300;
 
 const initialMission: Mission = {
   distance: 0,
@@ -44,7 +44,7 @@ const Execution: NextPage = () => {
           { bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)' },
           { bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)' },
         ], {
-          duration: 300000,
+          duration: 30000,
           easing: 'cubic-bezier(.4,.9,0,1)',
           fill: 'both',
         })
@@ -115,7 +115,7 @@ const Execution: NextPage = () => {
           newMission.distance += 724427;
           return newMission;
         });
-      }, 200)
+      }, 100)
       return () => window.clearInterval(timer);
     }
 

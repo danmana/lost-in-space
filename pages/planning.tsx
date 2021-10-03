@@ -118,8 +118,8 @@ const Planning = () => {
 
           <div className={planningStyles.totals}>
             <span>Total </span>
-            <span>weight: {totalWeight | 0}tons</span>
-            <span>price: {totalPrice | 0}$</span>
+            <span>Weight: {totalWeight | 0}tons</span>
+            <span>Cost: {totalPrice | 0}$</span>
           </div>
         </div>
 

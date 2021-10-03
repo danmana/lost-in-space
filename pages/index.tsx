@@ -13,10 +13,17 @@ import BackgroundPlanets from "../common/components/background-planets";
 const Introduction = {
   messages: [
     {
-      content: "Welcome to <i><b>Lost in Space</b></i>. Here is the first message from our introduction. We hope you will like our game. Enjoy!",
+      content: "What took you so long to arrive? Err... nevermind, let's get to business, no time to waste here! <br><br>" +
+          "Your new mission is to land on Mars together with your crew. We managed to get a new spaceship, THE STARSHIP! Can you believe it? " +
+          "You can read all the specs <a style='color:blue' target='_blank' href='https://www.space.com/spacex-starship-super-heavy.html'>here</a>. The launch window starts from 23rd of October and will last for 4 weeks, we'll have the " +
+          "lift-off and then travel in an elliptical orbit around the Sun that will eventually intersect the orbit of Mars. <br><br> Go now! Btw, plan your " +
+          "resources carefully so that you can reach Mars with no problems!"
     },
     {
-      content: "Here you can meet the Happy astronaut. Over and over again. What is your name?",
+      content: "Oh! I forgot, this is your new crew: Meet your space colleagues Pati and Dana, they can be funny, at times.. joking, they are funny and ALSO they'll " +
+          "help you around for all the issues that may appear in your long \"excursion\" (communication issues, toilet breakdowns or other things like this)." +
+          "<br><br> You'll also have Dreu as your own personal \"Houston\", which will aid you along the whole process. And ofcourse me.. I'm gonna " +
+          "try to give you some tips and tricks and hopefully you'll listen to me. What was your name again?",
       resource: Team,
       inputName: true
     }

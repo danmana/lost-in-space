@@ -212,3 +212,17 @@
   transform: translateY(-93%);
   z-index: 1;
 }
+
+.solutionEffects {
+  font-size: 10px;
+}
+
+.effectNegative {
+  white-space: nowrap;
+  color: #dd3a19;
+}
+
+.effectPositive {
+  white-space: nowrap;
+  color: #5db906;
+}

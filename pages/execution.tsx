@@ -290,7 +290,23 @@ const Execution: NextPage = () => {
               {currentEvent.solutions.map((solution: Solution, index: number) => {
                 return (
                   <label key={index}>
-                    <input type="radio" value={JSON.stringify(solution.effects)} name="solutions"/> {solution.text}
+                    <input type="radio" value={JSON.stringify(solution.effects)} name="solutions"/>
+                    <div>
+                      <div>{solution.text}</div>
+                      <div className={styles.solutionEffects}>
+                      ({
+                          Object.entries(solution.effects).map(([res, value], i) => {
+                              return <span key={res}>
+                                  {i > 0 ? ', ': ''}
+                                  {res}: 
+                                  <span className={value < 0 ? styles.effectNegative: styles.effectPositive}>
+                                    {value > 0 ? '+': ''}{value}
+                                  </span>
+                                  </span>
+                          })
+                      })
+                      </div>
+                    </div>
                   </label>
                 );
               })}

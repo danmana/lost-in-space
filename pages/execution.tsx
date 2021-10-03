@@ -4,7 +4,7 @@ import { Stats } from '../common/model/stats.model';
 import { useContext, useEffect, useState } from 'react';
 import { WarehouseContext } from '../common/context/warehouse.context';
 import { Mission } from "../common/model/mission.model";
-import { events } from "../common/model/event.model";
+import { events, Solution } from "../common/model/event.model";
 
 const stats: { [key: string]: Stats } = {
   happiness: {
@@ -32,10 +32,11 @@ const Execution: NextPage = () => {
   const [mission, setMission] = useState(initialMission);
   const [currentEvent, setCurrentEvent] = useState(null as any);
   const [animation, setAnimation] = useState(null as any);
-  const { warehouse, setWarehouse } = useContext(WarehouseContext);
+  const [solutionEffects, setSolutionEffects] = useState();
+  const {warehouse, setWarehouse} = useContext(WarehouseContext);
 
   useEffect(() => {
-    const newWarehouse = { ...warehouse };
+    const newWarehouse = {...warehouse};
     Object.values(newWarehouse.resources)
       .forEach((resource) => {
         resource.remaining = resource.quantity
@@ -49,40 +50,19 @@ const Execution: NextPage = () => {
     if (rocket) {
       const animatedRocket = rocket.animate(
         [
-          { bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)' },
-          { bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)' },
-          { bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)' },
-          { bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)' },
+          {bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
+          {bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
+          {bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
+          {bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
         ], {
           duration: 300000,
           easing: 'cubic-bezier(.4,.9,0,1)',
-          // easing: 'ease-out',
           fill: 'both',
-          // delay: 2000
         })
 
       setAnimation(animatedRocket);
-      // setTimeout(() => {
-      //   animatedRocket.pause();
-      // }, 5000)
     }
   }, []);
-
-  const getEvent = () => {
-    const eventsToHappen = events.map(event => {
-      const chance = Math.random();
-      return { chance, event };
-    }).filter(({ chance, event }) => {
-      return chance < event.chance;
-    });
-    if (eventsToHappen.length) {
-      return eventsToHappen.reduce(((previousValue, currentValue) => {
-        return previousValue.chance < currentValue.chance ? currentValue: previousValue;
-      })).event;
-    } else {
-      return null;
-    }
-  }
 
   useEffect(() => {
     if (currentEvent) {
@@ -96,30 +76,10 @@ const Execution: NextPage = () => {
   }, [mission.day])
 
   useEffect(() => {
-    if (currentEvent) {
-      setTimeout(() => {
-        const solutionIndex = Math.floor(Math.random() * currentEvent.solutions.length);
-        const solution = currentEvent.solutions[solutionIndex];
-        console.log(solution.effects);
-        Object.entries(solution.effects).forEach(([key, value]) => {
-          const newWarehouse = { ...warehouse };
-          if (newWarehouse.stats[key]) {
-            newWarehouse.stats[key].value += (value as number);
-          }
-        });
-
-        setCurrentEvent(null);
-      }, 1000)
-    } else if (animation) {
-      animation.play();
-    }
-  }, [currentEvent, animation])
-
-  useEffect(() => {
     if (!currentEvent && mission.day < 300) {
       const timer = window.setInterval(() => {
         setMission(mission => {
-          const newMission = { ...mission };
+          const newMission = {...mission};
           newMission.day += 1;
           newMission.distance += 724427;
           return newMission;
@@ -129,6 +89,37 @@ const Execution: NextPage = () => {
     }
 
   }, [mission.day, currentEvent]);
+
+  const getEvent = () => {
+    const eventsToHappen = events.map(event => {
+      const chance = Math.random();
+      return {chance, event};
+    }).filter(({chance, event}) => {
+      return chance < event.chance;
+    });
+    if (eventsToHappen.length) {
+      return eventsToHappen.reduce(((previousValue, currentValue) => {
+        return previousValue.chance < currentValue.chance ? currentValue : previousValue;
+      })).event;
+    } else {
+      return null;
+    }
+  }
+
+  const applySolution = (event) => {
+    if (solutionEffects) {
+      const newWarehouse = {...warehouse};
+      Object.entries(solutionEffects).forEach(([key, value]) => {
+        if (newWarehouse.stats[key]) {
+          newWarehouse.stats[key].value += (value as number);
+        }
+      });
+      setCurrentEvent(null);
+      setWarehouse(newWarehouse);
+      setSolutionEffects(undefined);
+      animation.play();
+    }
+  };
 
   const progress = (percentage: number) => {
     return (
@@ -143,7 +134,7 @@ const Execution: NextPage = () => {
         <div className={styles.blockBorder}></div>
         <div className={styles.blockMeter}>
           <div className={styles.progress}
-               style={{ width: `${percentage}%`, backgroundColor: getColor(percentage) }}></div>
+               style={{width: `${percentage}%`, backgroundColor: getColor(percentage)}}></div>
         </div>
       </div>
     );
@@ -160,6 +151,10 @@ const Execution: NextPage = () => {
     }
 
     return color
+  }
+
+  const onChangeValue = (event: any) => {
+    setSolutionEffects(JSON.parse(event.target.value));
   }
 
   return (
@@ -211,6 +206,27 @@ const Execution: NextPage = () => {
         <div>Day {mission.day}</div>
         <div>Distance: {mission.distance} km</div>
       </section>
+
+      {currentEvent &&
+      <section className={styles.dialog}>
+        <h3>{currentEvent.name}</h3>
+        <div
+          dangerouslySetInnerHTML={{__html: currentEvent.content}}
+        ></div>
+        <div onChange={onChangeValue} className={styles.inputContainer}>
+          {currentEvent.solutions.map((solution: Solution, index: number) => {
+            return (
+              <label key={index}>
+                  <input type="radio" value={JSON.stringify(solution.effects)} name="solutions"/> {solution.text}
+                </label>
+            );
+          })}
+        </div>
+        <div className={styles.buttonContainer}>
+          <button className={`${styles.button} ${solutionEffects ? '' : styles.grayedOut}`} onClick={applySolution}>Proceed</button>
+        </div>
+      </section>
+      }
     </main>
   )
 }

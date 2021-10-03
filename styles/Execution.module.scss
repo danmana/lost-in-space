@@ -50,7 +50,7 @@
 .info {
   padding: 20px 30px;
   position: absolute;
-  top: 0;
+  top: 40px;
   right: 0;
   text-align: right;
 
@@ -121,4 +121,60 @@
 
 .progress {
   height: 100%;
+}
+
+.dialog {
+  background-color: white;
+  color: black;
+  line-height: 1.5;
+  padding: 20px 30px;
+  border-radius: 4px;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+
+  & h3 {
+    color: deepskyblue;
+    margin-bottom: 15px;
+  }
+
+  & .inputContainer {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+
+    & > label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+  }
+
+  & input {
+    height: 15px;
+    min-width: 15px;
+    width: 15px;
+    margin-right: 10px;
+  }
+
+  & .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  & .button {
+    padding: 8px 12px;
+    background-color: deepskyblue;
+    color: white;
+    border-radius: 4px;
+
+    &.grayedOut {
+      background-color: grey;
+    }
+  }
 }

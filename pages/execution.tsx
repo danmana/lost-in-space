@@ -7,16 +7,16 @@ import { Mission } from "../common/model/mission.model";
 import { events } from "../common/model/event.model";
 
 const stats: { [key: string]: Stats } = {
-  mood: {
-    value: 75,
+  happiness: {
+    value: 100,
     type: "Mood"
   },
   health: {
-    value: 32,
+    value: 100,
     type: "Health"
   },
   aircraft: {
-    value: 55,
+    value: 100,
     type: "Aircraft"
   }
 };
@@ -54,7 +54,7 @@ const Execution: NextPage = () => {
           { bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)' },
           { bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)' },
         ], {
-          duration: 30000,
+          duration: 300000,
           easing: 'cubic-bezier(.4,.9,0,1)',
           // easing: 'ease-out',
           fill: 'both',
@@ -87,15 +87,36 @@ const Execution: NextPage = () => {
   useEffect(() => {
     if (currentEvent) {
       animation.pause();
-      alert(JSON.stringify(currentEvent));
     }
   }, [currentEvent]);
 
   useEffect(() => {
     const event = getEvent();
     setCurrentEvent(event);
+  }, [mission.day])
 
-    if (!event && mission.day < 700) {
+  useEffect(() => {
+    if (currentEvent) {
+      setTimeout(() => {
+        const solutionIndex = Math.floor(Math.random() * currentEvent.solutions.length);
+        const solution = currentEvent.solutions[solutionIndex];
+        console.log(solution.effects);
+        Object.entries(solution.effects).forEach(([key, value]) => {
+          const newWarehouse = { ...warehouse };
+          if (newWarehouse.stats[key]) {
+            newWarehouse.stats[key].value += (value as number);
+          }
+        });
+
+        setCurrentEvent(null);
+      }, 1000)
+    } else if (animation) {
+      animation.play();
+    }
+  }, [currentEvent, animation])
+
+  useEffect(() => {
+    if (!currentEvent && mission.day < 300) {
       const timer = window.setInterval(() => {
         setMission(mission => {
           const newMission = { ...mission };
@@ -107,7 +128,7 @@ const Execution: NextPage = () => {
       return () => window.clearInterval(timer);
     }
 
-  }, [mission.day]);
+  }, [mission.day, currentEvent]);
 
   const progress = (percentage: number) => {
     return (

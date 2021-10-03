@@ -96,8 +96,8 @@ const Planning = () => {
   const resourceContainers = getBasicResourceContainers(basicResources)
   const miscContainers = getMiscResourceContainers(miscResources)
 
-  const totalWeight = getTotalPropertyValue(warehouse.resources, 'price');
-  const totalPrice = getTotalPropertyValue(warehouse.resources, 'weight')
+  const totalWeight = getTotalPropertyValue(warehouse.resources, 'weight');
+  const totalPrice = getTotalPropertyValue(warehouse.resources, 'price')
 
   return (
     <div className={styles.container}>

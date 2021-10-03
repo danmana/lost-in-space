@@ -87,10 +87,10 @@ const Execution: NextPage = () => {
 
   useEffect(() => {
     const resourceDepleted = Object.entries(warehouse.resources).some(([key, value]) => {
-      return shownResources.includes(value.resource.type) && value.remaining === 0;
+      return shownResources.includes(value.resource.type) && value.remaining <= 0;
     });
     const statsDepleted = Object.entries(warehouse.stats).some(([key, value]) => {
-      return value.value === 0;
+      return value.value <= 0;
     });
 
     if (resourceDepleted || statsDepleted) {
@@ -191,7 +191,9 @@ const Execution: NextPage = () => {
       setCurrentEvent(null);
       setWarehouse(newWarehouse);
       setSolutionEffects(undefined);
-      animation.play();
+      if(animation) {
+        animation.play();
+      }
     }
   };
 
@@ -308,7 +310,7 @@ const Execution: NextPage = () => {
                           Object.entries(solution.effects).map(([res, value], i) => {
                               return <span key={res}>
                                   {i > 0 ? ', ': ''}
-                                  {res}: 
+                                  {res}:
                                   <span className={value < 0 ? styles.effectNegative: styles.effectPositive}>
                                     {value > 0 ? '+': ''}{value}
                                   </span>

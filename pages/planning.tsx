@@ -9,24 +9,26 @@ import { WarehouseContext } from "../common/context/warehouse.context";
 import BackgroundPlanets from "../common/components/background-planets";
 
 const basicResources: { [key: string]: Resource } = {
-  fuel: { type: "Fuel", price: 10, weight: 10 },
-  food: { type: "Food", price: 10, weight: 10 },
-  water: { type: "Water", price: 10, weight: 10 },
-  oxygen: { type: "Oxygen", price: 10, weight: 10 },
-  meds: { type: "Meds", price: 10, weight: 10 },
-  equipment: { type: "Equipment", price: 10, weight: 10 },
-  misc: { type: "Misc", price: 10, weight: 10 },
+  fuel: { type: "Fuel", price: 50, weight: 1 }, // 200 = 10000
+  food: { type: "Food", price: 23, weight: 1 }, //600 = 13800
+  water: { type: "Water", price: 11, weight: 1 }, //200 = 2200
+  oxygen: { type: "Oxygen", price: 7, weight: 1 }, //300 = 2100
+  meds: { type: "Meds", price: 17, weight: 1 }, //300 = 5100
+  equipment: { type: "Equipment", price: 5, weight: 1 } //155 = 775
 }
 
 const miscResources: { [key: string]: Resource } = {
-  sweets: { type: "Sweets", price: 10, weight: 10 },
-  media: { type: "Media", price: 10, weight: 10 },
-  tv: { type: "TV", price: 10, weight: 10 },
-  nintendo: { type: "Nintendo", price: 10, weight: 10 },
-  eReader: { type: "eReader", price: 10, weight: 10 },
-  ambientLights: { type: "Ambient Lights", price: 10, weight: 10 },
-  fashionableHat: { type: "Fashionable Hat", price: 10, weight: 10 },
-
+  sweets: { type: "Sweets", price: 100, weight: 30 },
+  media: { type: "Media", price: 239, weight: 14 },
+  tv: { type: "TV", price: 275, weight: 54},
+  nintendo: { type: "Nintendo", price: 150, weight: 2 },
+  eReader: { type: "eReader", price: 123, weight: 2 },
+  ambientLights: { type: "Ambient Lights", price: 197, weight: 30 },
+  fashionableHat: { type: "Fashionable Hat", price: 200, weight: 3 },
+  cola: { type: "Cola", price: 540, weight: 36 },
+  swimmingSuit: {type: "Swimming Suite", price: 300, weight: 3},
+  winterCoat: {type: "Winter Coat", price: 600, weight: 12},
+  toys: {type: "Toys", price: 600, weight: 190},
 }
 
 const Planning = () => {
@@ -59,7 +61,7 @@ const Planning = () => {
           <input className={planningStyles['basic-resource']}
                  type="number" min={0}
                  onChange={(event) => changeBasicQuantity(key, Number.parseInt(event.target.value))}/>
-          <span>tons</span>
+          <span>&nbsp;units</span>
           <span className={planningStyles['dotted-underline']}/>
           <span className={planningStyles.quantity}>{(warehouse.resources[key]?.quantity | 0) * resources[key].price}$</span>
         </div>
@@ -99,7 +101,7 @@ const Planning = () => {
     <div className={styles.container}>
       <BackgroundPlanets/>
       <main className={planningStyles.container}>
-        <h3>Hey {username}, plan your resources so that the space crew can reach Mars! You have a limited cargo space of 500 tons and a budget of 2mil$</h3>
+        <h3>Hey {username}, plan your resources so that the space crew can reach Mars! You have a limited cargo space of 1750 units and a budget of 35k$</h3>
         <div className={planningStyles['resources-container']}>
           <div className={planningStyles['resources-type-container']}>
             <span className={planningStyles['resources-type']}>BASIC</span>
@@ -117,9 +119,9 @@ const Planning = () => {
           <span className={planningStyles.separator}/>
 
           <div className={planningStyles.totals}>
-            <span>Total </span>
-            <span>Weight: {totalWeight | 0}tons</span>
-            <span>Cost: {totalPrice | 0}$</span>
+            <span>Total</span>
+            <span>Weight:&nbsp; {totalWeight | 0}&nbsp;units</span>
+            <span>Cost:&nbsp; {totalPrice | 0}&nbsp;$</span>
           </div>
         </div>
 

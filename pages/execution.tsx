@@ -6,7 +6,7 @@ import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
 import { useRouter } from 'next/router';
 
-const daysToMars = 300;
+const daysToMars = 195;
 
 const initialMission: Mission = {
   distance: 0,
@@ -44,7 +44,7 @@ const Execution: NextPage = () => {
           { bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)' },
           { bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)' },
         ], {
-          duration: 30000,
+          duration: 39000,
           easing: 'cubic-bezier(.4,.9,0,1)',
           fill: 'both',
         })
@@ -66,10 +66,13 @@ const Execution: NextPage = () => {
 
   useEffect(() => {
     const newWarehouse = { ...warehouse };
-    newWarehouse.resources.fuel && (newWarehouse.resources.fuel.remaining -= 0.5);
-    newWarehouse.resources.water && (newWarehouse.resources.water.remaining -= 0.5);
-    newWarehouse.resources.oxygen && (newWarehouse.resources.oxygen.remaining -= 0.5);
-    newWarehouse.resources.meds && (newWarehouse.resources.meds.remaining -= 0.5);
+    newWarehouse.resources.fuel && (newWarehouse.resources.fuel.remaining -= 1);
+    newWarehouse.resources.food && (newWarehouse.resources.food.remaining -= 3);
+    newWarehouse.resources.water && (newWarehouse.resources.water.remaining -= 1);
+    const oxygen = newWarehouse.stats.health.value < 50 ? Math.floor(Math.random() * (3 - 1) + 1): 1;
+    const meds = newWarehouse.stats.health.value < 50 ? Math.floor(Math.random() * (3 - 1) + 1): 1;
+    newWarehouse.resources.oxygen && (newWarehouse.resources.oxygen.remaining -= oxygen);
+    newWarehouse.resources.meds && (newWarehouse.resources.meds.remaining -= meds);
 
     setWarehouse(newWarehouse);
   }, [mission.day]);
@@ -112,7 +115,7 @@ const Execution: NextPage = () => {
         setMission(mission => {
           const newMission = { ...mission };
           newMission.day += 1;
-          newMission.distance += 724427;
+          newMission.distance += 1119758;
           return newMission;
         });
       }, 100)
@@ -239,7 +242,7 @@ const Execution: NextPage = () => {
       </section>
       <section className={styles.info}>
         <div>Day {mission.day}</div>
-        <div>Distance: {mission.distance} km</div>
+        <div>Distance: {mission.distance.toLocaleString()} km</div>
       </section>
 
       {currentEvent &&

@@ -31,6 +31,7 @@ const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
 const Execution: NextPage = () => {
   const [mission, setMission] = useState(initialMission);
   const [currentEvent, setCurrentEvent] = useState(null as any);
+  const [animation, setAnimation] = useState(null as any);
   const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
@@ -46,13 +47,12 @@ const Execution: NextPage = () => {
 
     const rocket = document.getElementById('rocket');
     if (rocket) {
-
       const animatedRocket = rocket.animate(
         [
-          {bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
-          {bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
-          {bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
-          {bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
+          { bottom: '5%', right: '50%', transform: 'translateX(-50%) rotate(5deg)' },
+          { bottom: '50%', right: '44%', transform: 'translateX(-50%) rotate(17deg)' },
+          { bottom: '75%', right: '41%', transform: 'translateX(-50%) rotate(35deg)' },
+          { bottom: '90%', right: '35%', transform: 'translateX(-50%) rotate(200deg)' },
         ], {
           duration: 30000,
           easing: 'cubic-bezier(.4,.9,0,1)',
@@ -61,6 +61,7 @@ const Execution: NextPage = () => {
           // delay: 2000
         })
 
+      setAnimation(animatedRocket);
       // setTimeout(() => {
       //   animatedRocket.pause();
       // }, 5000)
@@ -85,7 +86,8 @@ const Execution: NextPage = () => {
 
   useEffect(() => {
     if (currentEvent) {
-      console.log(currentEvent);
+      animation.pause();
+      alert(JSON.stringify(currentEvent));
     }
   }, [currentEvent]);
 

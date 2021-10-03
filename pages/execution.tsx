@@ -75,6 +75,28 @@ const Execution: NextPage = () => {
     newWarehouse.stats = stats;
 
     setWarehouse(newWarehouse);
+
+    const rocket = document.getElementById('rocket');
+    if (rocket) {
+
+      const animatedRocket = rocket.animate(
+        [
+          {bottom: '20px', right: '50%', transform: 'translateX(-50%) rotate(5deg)'},
+          {bottom: '450px', right: '44%', transform: 'translateX(-50%) rotate(17deg)'},
+          {bottom: '600px', right: '41%', transform: 'translateX(-50%) rotate(35deg)'},
+          {bottom: '800px', right: '35%', transform: 'translateX(-50%) rotate(200deg)'},
+        ], {
+          duration: 30000,
+          easing: 'cubic-bezier(.4,.9,0,1)',
+          // easing: 'ease-out',
+          fill: 'both',
+          // delay: 2000
+        })
+
+      // setTimeout(() => {
+      //   animatedRocket.pause();
+      // }, 5000)
+    }
   }, []);
 
   const progress = (percentage: number) => {
@@ -125,7 +147,8 @@ const Execution: NextPage = () => {
                     <span>{stat.value}&nbsp;/&nbsp;100</span>
                   </div>
                 </div>
-            )})
+              )
+            })
 
           }
         </div>
@@ -150,7 +173,9 @@ const Execution: NextPage = () => {
           }
         </div>
       </section>
-      <section className={styles.journey}></section>
+      <section className={styles.journey}>
+        <img src={'/svg/rocket2.svg'} alt={"Rocket"} id="rocket"/>
+      </section>
       <section className={styles.info}>
         <div>Distance: 12.678 km</div>
         <div>Day 134</div>

@@ -33,9 +33,18 @@
 }
 
 .journey {
+  position: relative;
   flex-basis: 75%;
-  background: url("../public/background-large.jpeg") no-repeat;
+  background: url("../public/journey-background3.png") no-repeat;
   background-size: cover;
+
+  & img {
+    height: 150px;
+    position: absolute;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .info {

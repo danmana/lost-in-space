@@ -25,7 +25,7 @@ export const events: Event[] = [
   {
     name: "Spoiled food",
     content: "Your astronauts ate some spoiled food. It turns out that the entire batch is spoiled.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { food: -100 },
     solutions: [
@@ -39,7 +39,7 @@ export const events: Event[] = [
   {
     name: "Bad dream",
     content: "I had a bad dream last night. I dreamt I was falling towards Mars, but I didn't have anything to slow me down. I woke up just before I hit the ground, covered in sweat and with my heart racing. I know it's just a dream, but I can't shake the feeling something bad is going to happen",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { happiness: -100 },
     solutions: [
@@ -53,7 +53,7 @@ export const events: Event[] = [
   {
     name: "Homesick",
     content: "One of the astonauts had a dream about his family last night and is feeling homesick today.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { happiness: -4 },
     solutions: [
@@ -71,7 +71,7 @@ export const events: Event[] = [
     content: "The Parker Solar Probe, while doing a flyby of the sun, has detected a massive solar flare heading your way.\n" +
       "Solar flares pose a risk to both the crew due to radiation and the spaceship because they can overload electical equipment.",
     // http://www.nasa.gov/content/goddard/parker-solar-probe
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -20, aircraft: -20 },
     solutions: [
@@ -88,7 +88,7 @@ export const events: Event[] = [
   {
     name: "Minor accident",
     content: "Dana forgot to strap herself while sleeping, again ... She floated while asleep and banged her head on something sharp.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -5, happiness: -2 },
     solutions: [
@@ -102,7 +102,7 @@ export const events: Event[] = [
   {
     name: "Minor accident",
     content: "Pati hit her toe on the bulkhead door. It's not broken, but probably has a hairline fracture. Astronauts loose bone mass in microgravity and are more prone to bone fractures.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, happiness: -2 },
     solutions: [
@@ -116,7 +116,7 @@ export const events: Event[] = [
   {
     name: "Bone and muscle loss",
     content: "Your astronauts have lost some of their bones and muscles due to lack of exercise in microgravity.\nThey are now much weaker than before.\nAt this rate serious medical problems would happen before you reach Mars, and they might not make it through the high G forces during landing.",
-    chance: 0,
+    chance: 0.001,
     chanceIncrement: 0.01,
     effects: { health: -10, happiness: -2 },
     solutions: [
@@ -130,7 +130,7 @@ export const events: Event[] = [
   {
     name: "It's so booring",
     content: "The monotony of the long flight is sinking in. The astronauts are bored and this is affecting their mood.",
-    chance: 0,
+    chance: 0.002,
     chanceIncrement: 0.01,
     effects: { health: -5 },
     solutions: [
@@ -152,7 +152,7 @@ export const events: Event[] = [
     content: "The spacecraft has malfunctioned. One of the manuvering thrusters has failed and is firing sporadically.\n" +
       "If you leave it like this it could seriously affect your trajectory.\n" +
       "One of the astronauts will have to do an EVA and fix it.",
-    chance: 0.005,
+    chance: 0.003,
     chanceIncrement: 0.001,
     effects: { aircraft: -10, happiness: -5 },
     solutions: [
@@ -171,7 +171,7 @@ export const events: Event[] = [
       "In space radiative cooling is one of the few ways by which a spacecraft can loose heat.\n" +
       "If the pumps are not working the radiators can't dissipate the heat fast enough and the temperature in the crew module will keep rising.",
     // https://en.wikipedia.org/wiki/Spacecraft_thermal_control
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -20, aircraft: -20, happiness: -20 },
     solutions: [
@@ -187,7 +187,7 @@ export const events: Event[] = [
   {
     name: "Surprise",
     content: "You open today's dinner and find that the ground crew prepared a surprise for you: Chocolate cake",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0.001,
     effects: { hapiness: 5},
     solutions: [
@@ -200,7 +200,7 @@ export const events: Event[] = [
     name: "Air Quality",
     content: "The air quality is so bad that the astronauts are not able to breathe properly.\n" +
       "After further investigation you find out that the small particulate filter has some water damage and needs to be replaced.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -5 },
     solutions: [
@@ -216,7 +216,7 @@ export const events: Event[] = [
   {
     name: "Air Quality",
     content: "The CO2 scrubber is not working at 100% efficiency. The astronauts are having trouble concentrating and some are experiencing headaches.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -5 },
     solutions: [
@@ -234,7 +234,7 @@ export const events: Event[] = [
   {
     name: "Insomnia",
     content: "The lack of dark light cycles is messing with the astronauts circadian rithms. Some of them are having trouble sleeping.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -5 },
     solutions: [
@@ -252,7 +252,7 @@ export const events: Event[] = [
     content: "The toilet is malfunctioning and is not providing enough suction.\n" +
       "Using a toilet in space is hard enough when everything works fine, but this is really affecting the mood and health of the astronauts.",
     // https://www.cnet.com/news/spacex-inspiration4-crew-had-challenges-with-the-spacecrafts-toilet-elon-musk-says/
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -5 },
     solutions: [
@@ -266,7 +266,7 @@ export const events: Event[] = [
   {
     name: "Space dust",
     content: "An unexpected cloud of dust damaged the communication array. You will need to replace it, otherwise you won't be able to talk with Earth",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { aircraft: -10, hapiness: -5 },
     solutions: [
@@ -280,7 +280,7 @@ export const events: Event[] = [
   {
     name: "Solar flare",
     content: "A small undetected solar flare caused a surge in the communication array. The communication array is malfunctioning and is not providing any signal.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { aircraft: -10, hapiness: -5 },
     solutions: [
@@ -308,7 +308,7 @@ export const events: Event[] = [
   {
     name: "Hull breach",
     content: "A micrometeorite caused a small puncture in the hull. You are loosing air pressure.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { aircraft: -10, health: -30, hapiness: -30, oxygen: -30 },
     solutions: [
@@ -325,7 +325,7 @@ export const events: Event[] = [
   //   // TODO: this is only for landing on Mars!
   //   name: "Mars dust storm",
   //   content: "A massive dust storm is raging on Mars. You can't land in this weather, you will have to wait until it dies down",
-  //   chance: 0.001,
+  //   chance: 0.003,
   //   chanceIncrement: 0,
   //   // Effect: Hapiness -10, Duration +14 days, Food -100, Oxygen -100, Water -100
   //   // Solution: Wait for the storm to pass
@@ -334,7 +334,7 @@ export const events: Event[] = [
   {
     name: "I like this song",
     content: "One of your crew was playing a song that you like. Sharing this made the bond between you stronger.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { hapiness: 5 },
     solutions: [
@@ -346,7 +346,7 @@ export const events: Event[] = [
   {
     name: "Can you please turn that down?",
     content: "One of your crew was playing a song that you hate on repeat. You told them to skip the song, but they ignored you and turned the volume up",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { hapiness: -5 },
     solutions: [
@@ -361,7 +361,7 @@ export const events: Event[] = [
   {
     name: "Water leak",
     content: "One of the water pipes burst and you have a leak in the crew module.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { aircraft: -10, hapiness: -5, water: -30 },
     solutions: [
@@ -375,7 +375,7 @@ export const events: Event[] = [
   {
     name: "Water or Ice",
     content: "Water in the main tank has frozen due to an insulator that fell of during launch.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { aircraft: -10, hapiness: -5, water: -30 },
     solutions: [
@@ -389,7 +389,7 @@ export const events: Event[] = [
   {
     name: "Movie night",
     content: "One of the astronauts proposes you do a movie night.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { hapiness: 5 },
     solutions: [
@@ -406,7 +406,7 @@ export const events: Event[] = [
     name: "Green or Gray",
     //https://99designs.com/blog/tips/how-color-impacts-emotions-and-behaviors/
     content: "Seeing green plants and taking care of them can be a great mood booster. The color green can make you feel optimistic and refreshed. When everything around is gray the mood of the crew will be more bland.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { hapiness: 5, water: -5 },
     solutions: [
@@ -422,7 +422,7 @@ export const events: Event[] = [
     // https://www.space.com/13766-international-space-station-flex-fire-research.html
     content: "Fire is a different beast in space than it is on the ground. \nWhen flames burn on Earth, heated gases rise from the fire, drawing oxygen in and pushing combustion products out. In microgravity, hot gases don't rise. So an entirely different process, called molecular diffusion, drives flame behavior.\n" +
       "Space flames can also burn at a lower temperature and with less oxygen than fires on Earth. As a result, the material used to put out space fires must be more concentrated",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -10, aircraft: -10 },
     solutions: [
@@ -438,7 +438,7 @@ export const events: Event[] = [
   {
     name: "Sick",
     content: "Even though all astronauts were in quarantine before the flight, it seems one of them has caught the flue.",
-    chance: 0.001,
+    chance: 0.003,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -10 },
     solutions: [

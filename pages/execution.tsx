@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { WarehouseContext } from '../common/context/warehouse.context';
 import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
+import { useRouter } from 'next/router';
 
 const stats: { [key: string]: Stats } = {
   happiness: {
@@ -29,12 +30,15 @@ const initialMission: Mission = {
 const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
 
 const Execution: NextPage = () => {
+  const router = useRouter();
   const [mission, setMission] = useState(initialMission);
   const [currentEvent, setCurrentEvent] = useState(null as any);
   const [animation, setAnimation] = useState(null as any);
   const [solutionEffects, setSolutionEffects] = useState();
-  const [failedMission, setFailedMission] = useState(false);
-  const { warehouse, setWarehouse } = useContext(WarehouseContext);
+  const [isBoom, setIsBoom] = useState(false);
+  const [isDead, setIsDead] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const {warehouse, setWarehouse} = useContext(WarehouseContext);
 
   useEffect(() => {
     const newWarehouse = { ...warehouse };
@@ -95,16 +99,19 @@ const Execution: NextPage = () => {
     });
 
     if (resourceDepleted || statsDepleted) {
-      setFailedMission(true);
+      setIsDead(true);
     }
   }, [warehouse]);
 
   useEffect(() => {
-    animation && animation.pause();
-  }, [failedMission]);
+    if (isDead) {
+      animation && animation.pause();
+      setCurrentEvent(null);
+    }
+  }, [isDead]);
 
   useEffect(() => {
-    if (!failedMission && !currentEvent && mission.day < 300) {
+    if (!isDead && !isBoom && !isSuccess && !currentEvent && mission.day < 300) {
       const timer = window.setInterval(() => {
         setMission(mission => {
           const newMission = { ...mission };
@@ -116,7 +123,7 @@ const Execution: NextPage = () => {
       return () => window.clearInterval(timer);
     }
 
-  }, [mission.day, currentEvent, failedMission]);
+  }, [mission.day, currentEvent, isDead, isBoom, isSuccess]);
 
   const getEvent = () => {
     const eventsToHappen = events.map(event => {
@@ -183,6 +190,10 @@ const Execution: NextPage = () => {
 
   const onChangeValue = (event: any) => {
     setSolutionEffects(JSON.parse(event.target.value));
+  }
+
+  const again = () => {
+    router.push("/");
   }
 
   return (
@@ -254,6 +265,43 @@ const Execution: NextPage = () => {
               <button className={`${styles.button} ${solutionEffects ? '': styles.grayedOut}`} onClick={applySolution}>Proceed</button>
           </div>
       </section>
+      }
+
+      {isBoom &&
+      <section className={`${styles.dialog} ${styles.isBoom}`}>
+        <img src={"/boom.png"} alt={"You exploded!"}/>
+        <div>
+          <p>Damn, you missed the landing. It happens even to the best astronauts. Next time try another landing spot!</p>
+          <p>Good luck!</p>
+        </div>
+        <div className={styles.buttonContainer}>
+          <button className={styles.button} onClick={again}>Start again</button>
+        </div>
+      </section>
+      }
+
+      {isDead &&
+        <section className={`${styles.dialog} ${styles.isDead}`}>
+        <img src={"/svg/dead2.svg"} alt={"You died!"}/>
+        <div>
+          Seems like the journey didn't go so well. Make sure to plan well from the beginning next time and don't forget, it's up to you to keep the team safe until during your trip to Mars!
+        </div>
+        <div className={styles.buttonContainer}>
+        <button className={styles.button} onClick={again}>Start again</button>
+        </div>
+        </section>
+      }
+
+      {isSuccess &&
+        <section className={`${styles.dialog} ${styles.isSuccess}`}>
+        <img src={"/success.png"} alt={"You succeeded!"}/>
+        <div>
+          Congrats! You made it to Mars! Enjoy your time here while preparing for your journey back to Earth!
+        </div>
+        <div className={styles.buttonContainer}>
+        <button className={styles.button} onClick={again}>Another try</button>
+        </div>
+        </section>
       }
     </main>
   )

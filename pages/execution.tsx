@@ -83,14 +83,21 @@ const Execution: NextPage = () => {
     newWarehouse.resources.oxygen && (newWarehouse.resources.oxygen.remaining -= 0.5);
     newWarehouse.resources.meds && (newWarehouse.resources.meds.remaining -= 0.5);
 
-    const resourceDepleted = Object.entries(newWarehouse.resources).some(([key, value]) => {
+    setWarehouse(newWarehouse);
+  }, [mission.day]);
+
+  useEffect(() => {
+    const resourceDepleted = Object.entries(warehouse.resources).some(([key, value]) => {
       return value.remaining === 0;
     });
+    const statsDepleted = Object.entries(warehouse.stats).some(([key, value]) => {
+      return value.value === 0;
+    });
 
-    if (resourceDepleted) {
+    if (resourceDepleted || statsDepleted) {
       setFailedMission(true);
     }
-  }, [mission.day]);
+  }, [warehouse]);
 
   useEffect(() => {
     animation && animation.pause();

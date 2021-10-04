@@ -9,6 +9,7 @@ import { WarehouseContext } from "../common/context/warehouse.context";
 import BackgroundPlanets from "../common/components/background-planets";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faChevronRight, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
+import * as ga from '../common/google-analytics';
 
 const basicResources: { [key: string]: Resource } = {
   fuel: { type: "Fuel", price: 50, weight: 1 }, // 200 = 10000
@@ -132,7 +133,7 @@ const Planning = () => {
         </div>
 
         <Link href={"/execution"}>
-          <img src={"/start.png"} className={planningStyles.start} width={150} alt={"start button"}/>
+          <img src={"/start.png"} className={planningStyles.start} width={150} alt={"start button"} onClick={() => ga.event('START_GAME')}/>
         </Link>
       </main>
     </div>

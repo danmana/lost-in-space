@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { WarehouseContext } from '../common/context/warehouse.context';
 import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
+import * as ga from '../common/google-analytics';
 
 const daysToMars = 195;
 const secondToMoon = 35000;
@@ -77,8 +78,10 @@ const Execution: NextPage = () => {
     if (day === daysToMars) {
       const dieAnyway = Math.random() < 0.3;
       if (dieAnyway) {
+        ga.event('BOOM');
         setIsBoom(true);
       } else {
+        ga.event('WIN');
         setIsSuccess(true);
       }
       setCurrentEvent(null);
@@ -94,6 +97,7 @@ const Execution: NextPage = () => {
     });
 
     if (resourceDepleted || statsDepleted) {
+      ga.event('DEAD', { warehouse });
       setIsDead(true);
     }
   }, [warehouse]);
@@ -182,6 +186,7 @@ const Execution: NextPage = () => {
 
   const applySolution = (event: any) => {
     if (solutionEffects) {
+      ga.event('APPLY_SOLUTION', { solution: solutionEffects });
       const newWarehouse = { ...warehouse };
       Object.entries(solutionEffects).forEach(([key, value]) => {
         if (newWarehouse.stats[key]) {
@@ -234,6 +239,7 @@ const Execution: NextPage = () => {
   }
 
   const again = () => {
+    ga.event('RESTART_GAME');
     window.location.href = "/";
   }
 

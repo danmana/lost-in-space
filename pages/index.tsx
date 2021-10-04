@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../common/context/user.context';
 import BackgroundPlanets from "../common/components/background-planets";
+import * as ga from '../common/google-analytics';
 
 const Introduction = {
   messages: [
@@ -37,6 +38,7 @@ const Home: NextPage = () => {
   const messages = Introduction.messages;
 
   const goNext = () => {
+    ga.event('GO_NEXT');
     const isLast = currentMessage + 1 > messages.length - 1;
     if (isLast) {
       if (username) {
@@ -48,6 +50,7 @@ const Home: NextPage = () => {
   }
 
   const goBack = () => {
+    ga.event('GO_BACK');
     if (currentMessage > 0) {
       setCurrentMessage(currentMessage - 1);
     }

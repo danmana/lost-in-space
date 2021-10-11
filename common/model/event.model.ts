@@ -437,18 +437,18 @@ export const events: Event[] = [
   },
   {
     name: "Sick",
-    content: "Even though all astronauts were in quarantine before the flight, it seems one of them has caught the flue.",
+    content: "Even though all astronauts were in quarantine before the flight, it seems one of them has caught the flu.",
     chance: 0.002,
     chanceIncrement: 0,
     effects: { health: -10, hapiness: -10 },
     solutions: [
-      { text: 'It\'s just the flue', effects: { health: -30, hapiness: -7 } },
+      { text: 'It\'s just the flu', effects: { health: -30, hapiness: -7 } },
       { text: 'Isolate him', effects: { health: -10, hapiness: -10 } },
       { text: 'Isolate him and give medicine', effects: { health: -3, medicine: -2 } },
       { text: 'Give everybody medicine', effects: { health: -2, medicine: -10 } },
     ]
     // Effect: Health -10, Hapiness -10
-    // Solution: It's just the flue: Health -30, Hapiness -7
+    // Solution: It's just the flu: Health -30, Hapiness -7
     // Solution: Isolate him: Health -10, Hapiness -10
     // Solution: Isolate him and give medicine: Hapiness -3, Medicine -2
     // Solution: Give everybody medicine: Hapiness -2, Medicine -10

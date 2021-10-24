@@ -5,6 +5,8 @@ import { WarehouseContext } from '../common/context/warehouse.context';
 import { Mission } from "../common/model/mission.model";
 import { events, Solution } from "../common/model/event.model";
 import * as ga from '../common/google-analytics';
+import { useRouter } from 'next/router';
+import { UserContext } from '../common/context/user.context';
 
 const daysToMars = 195;
 const secondToMoon = 35000;
@@ -20,6 +22,8 @@ const initialMission: Mission = {
 const shownResources = ["Fuel", "Food", "Water", "Oxygen", "Meds"];
 
 const Execution: NextPage = () => {
+  const router = useRouter();
+  const {username} = useContext(UserContext);
   const [mission, setMission] = useState(initialMission);
   const [currentEvent, setCurrentEvent] = useState(null as any);
   const [animation, setAnimation] = useState(null as any);
@@ -28,22 +32,27 @@ const Execution: NextPage = () => {
   const [isDead, setIsDead] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [day, setDay] = useState(0);
-  const [timeout, setTimeout] = useState(secondToMoon/24);
+  const [timeout, setTimeout] = useState(secondToMoon / 24);
   const { warehouse, setWarehouse } = useContext(WarehouseContext);
 
   useEffect(() => {
-    const map = document.getElementById('map');
-    if (map) {
-      map.animate(
-        [
-          {transform: 'translateY(-93%)'},
-          {transform: 'translateY(-31%)'},
-        ], {
-          duration: secondToMoon + (secondToMoon/24),
-          easing: 'linear',
-          fill: 'both',
-        })
-
+    if (!username) {
+      router.replace('/');
+    } else if (!warehouse?.resources || Object.keys(warehouse?.resources).length === 0) {
+      router.replace('/planning');
+    } else {
+      const map = document.getElementById('map');
+      if (map) {
+        map.animate(
+          [
+            {transform: 'translateY(-93%)'},
+            {transform: 'translateY(-31%)'},
+          ], {
+            duration: secondToMoon + (secondToMoon / 24),
+            easing: 'linear',
+            fill: 'both',
+          })
+      }
     }
 
   }, []);
@@ -118,7 +127,7 @@ const Execution: NextPage = () => {
             let newDay = day;
             if (newMission.hours < 24) {
               newMission.hours += 1;
-              newMission.distance += 1119758/24;
+              newMission.distance += 1119758 / 24;
             } else {
               setTimeout(100);
               const newDay = newMission.hours / 24;
@@ -177,7 +186,7 @@ const Execution: NextPage = () => {
     });
     if (eventsToHappen.length) {
       return eventsToHappen.reduce(((previousValue, currentValue) => {
-        return previousValue.chance < currentValue.chance ? currentValue: previousValue;
+        return previousValue.chance < currentValue.chance ? currentValue : previousValue;
       })).event;
     } else {
       return null;
@@ -196,7 +205,7 @@ const Execution: NextPage = () => {
       setCurrentEvent(null);
       setWarehouse(newWarehouse);
       setSolutionEffects(undefined);
-      if(animation) {
+      if (animation) {
         animation.play();
       }
     }

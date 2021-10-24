@@ -8,8 +8,9 @@ import { UserContext } from "../common/context/user.context";
 import { WarehouseContext } from "../common/context/warehouse.context";
 import BackgroundPlanets from "../common/components/background-planets";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faChevronRight, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import * as ga from '../common/google-analytics';
+import { useRouter } from 'next/router';
 
 const basicResources: { [key: string]: Resource } = {
   fuel: { type: "Fuel", price: 50, weight: 1 }, // 200 = 10000
@@ -35,8 +36,15 @@ const miscResources: { [key: string]: Resource } = {
 }
 
 const Planning = () => {
+  const router = useRouter();
   const { warehouse, setWarehouse } = useContext(WarehouseContext);
   const { username } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!username) {
+      router.replace('/');
+    }
+  }, []);
 
   useEffect(() => {
     console.log(JSON.stringify(warehouse));

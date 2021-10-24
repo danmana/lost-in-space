@@ -1,22 +1,25 @@
 import styles from "../styles/Home.module.css";
 import planningStyles from "../styles/Planning.module.scss";
-import Link from "next/link"
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ResourceEntry } from "../common/model/warehouse.model";
 import { Resource } from "../common/model/resource.model";
 import { UserContext } from "../common/context/user.context";
 import { WarehouseContext } from "../common/context/warehouse.context";
 import BackgroundPlanets from "../common/components/background-planets";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faChevronRight, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import * as ga from '../common/google-analytics';
+import { useRouter } from 'next/router';
+
+const MAX_UNITS = 1750;
+const BUDGET = 35000;
 
 const basicResources: { [key: string]: Resource } = {
-  fuel: { type: "Fuel", price: 50, weight: 1 }, // 200 = 10000
-  food: { type: "Food", price: 23, weight: 1 }, //600 = 13800
-  water: { type: "Water", price: 11, weight: 1 }, //200 = 2200
-  oxygen: { type: "Oxygen", price: 7, weight: 1 }, //300 = 2100
-  meds: { type: "Meds", price: 17, weight: 1 }, //300 = 5100
+  fuel: { type: "Fuel", price: 50, weight: 1, mandatory: true }, // 200 = 10000
+  food: { type: "Food", price: 23, weight: 1, mandatory: true }, //600 = 13800
+  water: { type: "Water", price: 11, weight: 1, mandatory: true }, //200 = 2200
+  oxygen: { type: "Oxygen", price: 7, weight: 1, mandatory: true }, //300 = 2100
+  meds: { type: "Meds", price: 17, weight: 1, mandatory: true }, //300 = 5100
   equipment: { type: "Equipment", price: 5, weight: 1 } //155 = 775
 }
 
@@ -35,12 +38,36 @@ const miscResources: { [key: string]: Resource } = {
 }
 
 const Planning = () => {
+  const router = useRouter();
   const { warehouse, setWarehouse } = useContext(WarehouseContext);
   const { username } = useContext(UserContext);
+  const [ isValid, setIsValid ] = useState(false);
+  const [ totalWeight, setTotalWeight] = useState(0);
+  const [ totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    console.log(JSON.stringify(warehouse));
+    const computedWeight = getTotalPropertyValue(warehouse.resources, 'weight');
+    setTotalWeight(computedWeight);
+    const computedPrice = getTotalPropertyValue(warehouse.resources, 'price');
+    setTotalPrice(computedPrice);
+    checkValidity(computedWeight, computedPrice);
   }, [warehouse]);
+
+  const checkValidity = (computedWeight: number, computedPrice: number) => {
+    const hasMissingResources = Object.entries(basicResources).some(([key, value]) => {
+      return value.mandatory && (!warehouse?.resources?.[key] || warehouse.resources[key].quantity < 1);
+    });
+    const isWithinLimit = computedWeight <= MAX_UNITS && computedPrice <= BUDGET;
+
+    setIsValid(!hasMissingResources && isWithinLimit);
+  }
+
+  const goNext = () => {
+    if (isValid) {
+      ga.event('START_GAME');
+      router.push('/execution');
+    }
+  };
 
   const changeBasicQuantity = (key: string, quantity: number) => {
     warehouse.resources[key] = { resource: basicResources[key], quantity: quantity, remaining: quantity };
@@ -60,7 +87,7 @@ const Planning = () => {
     return Object.entries(resources).map(([key, value]) => {
       return (
         <div className={planningStyles['resource']} key={key}>
-          <label className={planningStyles.label}>{value.type}</label>
+          <label className={planningStyles.label}>{value.type} {value.mandatory && ' (min 1)'}</label>
           <input className={planningStyles['basic-resource']}
                  type="number" min={0}
                  onChange={(event) => changeBasicQuantity(key, Number.parseInt(event.target.value))}/>
@@ -97,9 +124,6 @@ const Planning = () => {
   const resourceContainers = getBasicResourceContainers(basicResources)
   const miscContainers = getMiscResourceContainers(miscResources)
 
-  const totalWeight = getTotalPropertyValue(warehouse.resources, 'weight');
-  const totalPrice = getTotalPropertyValue(warehouse.resources, 'price')
-
   return (
     <div className={styles.container}>
       <BackgroundPlanets/>
@@ -132,9 +156,12 @@ const Planning = () => {
           </div>
         </div>
 
-        <Link href={"/execution"}>
-          <img src={"/start.png"} className={planningStyles.start} width={150} alt={"start button"} onClick={() => ga.event('START_GAME')}/>
-        </Link>
+          <img src={isValid ? "/start.png" : "/start-disabled.png"}
+               className={planningStyles.start}
+               width={150}
+               alt={"start button"}
+               onClick={() => goNext()}
+          />
       </main>
     </div>
   )

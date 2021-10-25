@@ -77,13 +77,13 @@ export const events: Event[] = [
     solutions: [
       { text: 'I\'ve been to the beach before and I\'m fine', effects: { health: -20 } },
       { text: 'Take shelter in the core of the ship, turn off electronic devices', effects: { happiness: -5, aircraft: -1 } },
-      { text: 'Change course to avoid the flare', effects: { happiness: -2, fuel: -100, delay: 7 } },
+      { text: 'Change course to avoid the flare', effects: { happiness: -2, fuel: -100 } },
     ]
     // Further info about solar radiation and effects of solar flares: https://en.wikipedia.org/wiki/Solar_flare
     // Effect: Health -20, Spacecraft Health -20
     // Solution: I've been to the beach before and I'm fine: Health -20, Spacecraft Health -20 // info: Earths magnetic field protects against solar radiation. Radiation in space is much stronger than on the surface of the earth.
     // Solution: Take shelter in the core of the ship, turn off electronic devices: Hapiness -5, Spacecraft Health -1
-    // Solution: Change course to avoid the flare: Fuel -100, Hapiness -2, (Delay +7 days?)
+    // Solution: Change course to avoid the flare: Fuel -100, Hapiness -2)
   },
   {
     name: "Minor accident",

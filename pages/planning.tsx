@@ -45,6 +45,13 @@ const Planning = () => {
   const [ totalWeight, setTotalWeight] = useState(0);
   const [ totalPrice, setTotalPrice] = useState(0);
 
+
+  useEffect(() => {
+    if (!username) {
+      router.replace('/');
+    }
+  }, []);
+
   useEffect(() => {
     const computedWeight = getTotalPropertyValue(warehouse.resources, 'weight');
     setTotalWeight(computedWeight);

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import Image from 'next/image'
 import Team from '../public/svg/team.svg';
-import Astro from '../public/happy_astronaut.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../common/context/user.context';
@@ -39,8 +38,7 @@ const Home: NextPage = () => {
 
   const goNext = () => {
     ga.event('GO_NEXT');
-    const isLast = currentMessage + 1 > messages.length - 1;
-    if (isLast) {
+    if (isLast()) {
       if (username) {
         router.push('/planning');
       }
@@ -54,6 +52,10 @@ const Home: NextPage = () => {
     if (currentMessage > 0) {
       setCurrentMessage(currentMessage - 1);
     }
+  }
+
+  const isLast = (): boolean => {
+    return currentMessage === messages.length - 1;
   }
 
   return (
@@ -82,7 +84,7 @@ const Home: NextPage = () => {
             <div className={indexStyles.buttons}>
               {currentMessage > 0 &&
               <FontAwesomeIcon className={indexStyles.backButton} icon={faChevronLeft} onClick={goBack}/>}
-              <FontAwesomeIcon icon={faChevronRight} onClick={goNext}/>
+              <FontAwesomeIcon className={isLast() && !username ? indexStyles.disabled : ''} icon={faChevronRight} onClick={goNext}/>
             </div>
           </section>
           <div className={indexStyles.resources}>

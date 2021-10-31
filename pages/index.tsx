@@ -55,7 +55,7 @@ const Home: NextPage = () => {
   }
 
   const isLast = (): boolean => {
-    return currentMessage + 1 > messages.length - 1;
+    return currentMessage === messages.length - 1;
   }
 
   return (

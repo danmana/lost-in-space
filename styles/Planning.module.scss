@@ -45,12 +45,13 @@
 
 .misc-resource {
   width: 20px;
+  height: 20px;
 }
 
 .dotted-underline {
   flex: 1;
   border-bottom: 1px black dashed;
-  margin: 10px 10px 0;
+  margin: 5px 10px;
 }
 
 .resource-picker {
@@ -98,4 +99,8 @@
 .misc-resource:checked:before {
   background-image:url("../public/svg/checkbox-checked.svg");
   appearance: none;
+}
+
+.detail {
+  margin-left: 10px;
 }

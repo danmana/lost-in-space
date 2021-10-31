@@ -114,6 +114,7 @@ const Planning = () => {
           <input className={planningStyles['misc-resource']}
                  type="checkbox"
                  onChange={(event) => changeMiscQuantity(key, event.target.checked)}/>
+          <span className={planningStyles.detail}>({value.weight}&nbsp;units)</span>
           <span className={planningStyles['dotted-underline']}/>
           <span className={planningStyles.quantity}>{(warehouse.resources[key]?.quantity | 0) * resources[key].price}$</span>
         </div>
